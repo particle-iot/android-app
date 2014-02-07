@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Misc strings -->
+    <string name="app_name">Spark</string>
+    <string name="app_name_lower">spark</string>
+
+    <!-- error messages -->
+    <string name="cloud_unreachable_msg">Spark could not be reached at this time. Please check your internet connection, and try again later.</string>
+    <string name="api_error_msg">We have encountered an error. Please visit http://www.spark.io/support for more information.\n\nStatus code: </string>
+    <string name="tinker_error">We have encountered an error. Please check that your Core is online.</string>
+
+    <!-- tinker -->
+    <string name="your_core_is_set_up">Your Core is set up!</string>
+    <string name="welcome_to_tinker">Welcome to Tinker.</string>
+    <string name="tinker_instructions_1">Tinker is the fastest and easiest way to prototype and play with your Spark Core.</string>
+    <string name="tinker_instructions_2">Here you can access the basic input/output functions of the Spark Core without writing a line of code.</string>
+    <string name="tinker_instructions_3">Tap any pin to get started. Try digitalWrite on D7; there\'s an LED attached.</string>
+    <string name="tinker_instructions_4">Enjoy!\n<i>-The Spark Team</i></string>
+
+    <!-- UI strings -->
+    <plurals name="foundCoresMsg">
+        <item quantity="one">We found a Core!\nLet\'s name it.</item>
+        <item quantity="other">We found %d Cores!\nLet\'s name them.</item>
+    </plurals>
+
+    <string name="action_settings">Settings</string>
+    <string name="lets_connect_your_core">Let\'s connect your Core.</string>
+    <string name="password">Password</string>
+    <string name="ssid">SSID</string>
+    <string name="connect">Connect</string>
+    <string name="custom_aes_key">Custom AES Key</string>
+    <string name="you_can_change_these_names_at_any_point">You can change these names at any point.</string>
+    <string name="log_out">Log out</string>
+    <string name="help_">Help&#8230;</string>
+    <string name="smart_config_fine_print">Spark can only connect a Core to the Wi-Fi network you’re currently associated with. To connect the Core to a different network, first connect your phone to that network, then try again.</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="name_the_core_thats_shouting_rainbows">Name the Core that\'s shouting rainbows at you.</string>
+    <string name="no_cores_found_">No Cores found.</string>
+    <string name="continue_anyway">Continue Anyway</string>
+    <string name="try_again">Try Again</string>
+    <string name="report_a_bug">Report a bug</string>
+    <string name="contribute">Contribute</string>
+    <string name="documentation">Documentation</string>
+    <string name="build_your_own_core_app">Build your own Core app</string>
+    <string name="spark_homepage">Spark homepage</string>
+    <string name="support">Support</string>
+    <string name="connect_a_core">Connect a Core</string>
+    <string name="reflash_tinker">Reflash Tinker</string>
+    <string name="rename_core">Rename Core</string>
+    <string name="reconfigure_core">Reconfigure Core</string>
+    <string name="cores">cores</string>
+    <string name="sorry_you_ve_already_got_a_core_by_that_name_try_another_one_">Sorry, you’ve already got a Core by that name. Try another one.</string>
+    <string name="rename_your_core">Rename your Core</string>
+    <string name="rename">Rename</string>
+    <string name="clear_tinker">Clear Tinker</string>
+    <string name="stop">stop</string>
+    <string name="the_spark_core_can_only_accept_passwords_up_to_32_characters_">The Spark Core can only accept\npasswords up to 32 characters.</string>
+    <string name="log_out_">Log out?</string>
+    <string name="action_log_out">Log Out</string>
+    <string name="_unnamed_core_">(Unnamed Core)</string>
+    <string name="logged_out">Logged out.</string>
+    <string name="error_communicating_with_server">Error communicating with server</string>
+
+</resources>

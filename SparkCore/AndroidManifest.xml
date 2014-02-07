@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="io.spark.core.android"
+    android:versionCode="4"
+    android:versionName="0.1.2" >
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="19" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <application
+        android:name="io.spark.core.android.app.SparkCoreApp"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.CustomTypefaceGradientActionBar" >
+
+        <!-- Activities -->
+        <activity
+            android:name="io.spark.core.android.ui.SignUpActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="io.spark.core.android.ui.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name="io.spark.core.android.ui.smartconfig.SmartConfigActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CustomTypefaceGradientActionBar.Overlay"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="io.spark.core.android.ui.corelist.CoreListActivity" />
+        </activity>
+        <activity
+            android:name="io.spark.core.android.ui.smartconfig.NamingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CustomTypefaceGradientActionBar.Overlay"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SmartConfigActivity" />
+        </activity>
+        <activity
+            android:name="io.spark.core.android.ui.smartconfig.NoCoresFoundActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.CustomTypefaceGradientActionBar.Overlay"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".SmartConfigActivity" />
+        </activity>
+        <activity
+            android:name="io.spark.core.android.ui.corelist.CoreListActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.CustomTypefaceGradientActionBar.Overlay.NoUp" />
+
+        <!-- Services -->
+        <service
+            android:name="io.spark.core.android.cloud.requestservice.SimpleSparkApiService"
+            android:exported="false" />
+        <service
+            android:name="io.spark.core.android.smartconfig.SmartConfigService"
+            android:exported="false" />
+    </application>
+
+</manifest>

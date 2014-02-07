@@ -1,0 +1,23 @@
+<android.support.v4.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sliding_pane_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <fragment
+        android:id="@+id/core_list"
+        android:name="io.spark.core.android.ui.corelist.CoreListFragment"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        tools:layout="@layout/fragment_core_list" />
+
+    <FrameLayout
+        android:id="@+id/tinker_container"
+        android:layout_width="450dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/sign_up_background_bitmap"
+        android:paddingTop="?android:attr/actionBarSize" />
+
+</android.support.v4.widget.SlidingPaneLayout>

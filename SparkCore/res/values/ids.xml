@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="fine_print" type="id"/>
+    <item name="tinker_button_color" type="id"/>
+
+</resources>

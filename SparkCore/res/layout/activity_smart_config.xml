@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/smart_config_background"
+    android:keepScreenOn="true"
+    android:orientation="vertical"
+    android:paddingTop="?android:attr/actionBarSize"
+    tools:context=".SmartConfigActivity" >
+
+    <ScrollView
+        android:id="@+id/scroll_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            style="@style/FormContainer"
+            android:layout_marginTop="32dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <View
+                android:id="@+id/header_border"
+                android:layout_width="match_parent"
+                android:layout_height="4dp"
+                android:background="@color/cyan" />
+
+            <FrameLayout
+                android:id="@+id/smart_config_frag"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </ScrollView>
+
+    <com.danh32.fontify.TextView
+        android:id="@id/fine_print"
+        style="@style/FinePrint"
+        android:layout_width="@dimen/account_widget_width"
+        android:layout_height="0dp"
+        android:layout_gravity="fill_vertical|center_horizontal"
+        android:layout_marginBottom="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center_horizontal"
+        android:text="@string/smart_config_fine_print"
+        android:textColor="#CFFF" />
+
+</LinearLayout>

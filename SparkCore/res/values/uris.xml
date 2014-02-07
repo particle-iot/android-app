@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="uri_support">https://www.spark.io/support</string>
+    <string name="uri_spark_homepage">https://www.spark.io</string>
+    <string name="uri_build_your_own_app">https://www.spark.io/build</string>
+    <string name="uri_docs">http://docs.spark.io</string>
+    <string name="uri_contribute">http://spark.github.io</string>
+    <string name="uri_report_a_bug">http://www.github.com/spark/android-app/issues</string>
+    <string name="uri_forgot_password">https://www.spark.io/forgot-password</string>
+
+</resources>

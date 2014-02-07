@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="gotham_light">fonts/gotham_light.otf</string>
+    <string name="gotham_medium">fonts/gotham_medium.otf</string>
+    <string name="gotham_book">fonts/gotham_book.otf</string>
+    <string name="gotham_bold">fonts/gotham_bold.otf</string>
+
+</resources>

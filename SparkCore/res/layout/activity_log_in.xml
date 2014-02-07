@@ -1,0 +1,85 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/log_in_background"
+    tools:context=".LoginActivity" >
+
+    <ScrollView
+        android:id="@+id/scroll_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            style="@style/FormContainer"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/logo_top_margin"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/spark_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:maxWidth="163dp"
+                android:src="@drawable/spark_logo_temp"
+                tools:ignore="ContentDescription" />
+
+            <com.danh32.fontify.EditText
+                android:id="@+id/email"
+                style="@style/SparkEditText.Padded"
+                android:layout_width="match_parent"
+                android:layout_marginTop="24dp"
+                android:hint="@string/prompt_email"
+                android:inputType="textEmailAddress" >
+
+                <requestFocus />
+            </com.danh32.fontify.EditText>
+
+            <com.danh32.fontify.EditText
+                android:id="@+id/password"
+                style="@style/SparkEditText.Padded"
+                android:layout_width="match_parent"
+                android:layout_marginTop="8dp"
+                android:hint="@string/prompt_password"
+                android:imeActionId="@+id/login"
+                android:imeActionLabel="@string/action_log_in"
+                android:imeOptions="actionUnspecified"
+                android:inputType="textPassword" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp" >
+
+                <com.danh32.fontify.Button
+                    android:id="@+id/sign_up_button"
+                    style="@style/SparkButton"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/log_in_button_selector"
+                    android:text="@string/action_log_in" />
+
+                <ProgressBar
+                    android:id="@+id/progress_indicator"
+                    style="@style/SparkSpinner"
+                    android:layout_alignLeft="@id/sign_up_button"
+                    android:visibility="invisible" />
+            </RelativeLayout>
+
+            <com.danh32.fontify.TextView
+                android:id="@+id/no_account_yet"
+                style="@style/LinkText"
+                android:layout_marginTop="12dp"
+                android:text="@string/i_dont_have_an_account" />
+
+            <com.danh32.fontify.TextView
+                android:id="@+id/forgot_password"
+                style="@style/LinkText"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/action_forgot_password" />
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>

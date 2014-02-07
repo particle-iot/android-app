@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="AppTheme" parent="@android:style/Theme.Holo"></style>
+
+    <style name="Theme.NoActionBar" parent="@android:style/Theme.Holo.NoActionBar">
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="Theme.CustomTypefaceGradientActionBar" parent="@style/AppTheme">
+        <item name="android:actionBarStyle">@style/BigTextGradientActionBar</item>
+    </style>
+
+    <style name="Theme.CustomTypefaceGradientActionBar.Overlay">
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="Theme.CustomTypefaceGradientActionBar.Overlay.NoUp">
+        <item name="android:actionBarStyle">@style/BigTextGradientActionBar.NoUp</item>
+    </style>
+
+    <style name="Theme.CharcoalyActionBar" parent="@style/AppTheme">
+        <item name="android:actionBarStyle">@style/BigTextGradientActionBar</item>
+    </style>
+
+    <style name="AppTheme.DialogNoDimBackground" parent="@android:style/Theme.Holo.Dialog">
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!--
+    <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    -->
+
+    
+</resources>

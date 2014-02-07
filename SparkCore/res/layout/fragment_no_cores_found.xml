@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/form_box_bg"
+    android:orientation="vertical"
+    android:paddingBottom="44dp"
+    android:paddingLeft="28dp"
+    android:paddingRight="28dp" >
+
+    <com.danh32.fontify.TextView
+        style="@style/FormLabel"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_margin="12dp"
+        android:gravity="center"
+        android:text="@string/no_cores_found_"
+        android:textSize="@dimen/text_medium" />
+
+    <com.danh32.fontify.Button
+        android:id="@+id/try_again_button"
+        style="@style/SparkButton"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/red_button_selector"
+        android:text="@string/try_again" />
+
+    <com.danh32.fontify.Button
+        android:id="@+id/continue_anyway_button"
+        style="@style/SparkButton"
+        android:background="@drawable/red_button_selector"
+        android:text="@string/continue_anyway" />
+
+</LinearLayout>

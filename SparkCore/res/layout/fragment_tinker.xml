@@ -1,0 +1,182 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tinker_main"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    tools:context=".TinkerActivity" >
+
+    <RelativeLayout
+        android:layout_width="@dimen/content_width"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/tinker_core_shadow_temp"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp" >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:gravity="left"
+            android:orientation="vertical" >
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Left" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_a7"
+                    style="@style/SparkTinkerPin"
+                    android:text="A7" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Left" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_a6"
+                    style="@style/SparkTinkerPin"
+                    android:text="A6" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Left" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_a5"
+                    style="@style/SparkTinkerPin"
+                    android:text="A5" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Left" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_a4"
+                    style="@style/SparkTinkerPin"
+                    android:text="A4" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Left" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_a3"
+                    style="@style/SparkTinkerPin"
+                    android:text="A3" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Left" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_a2"
+                    style="@style/SparkTinkerPin"
+                    android:text="A2" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Left" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_a1"
+                    style="@style/SparkTinkerPin"
+                    android:text="A1" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Left" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_a0"
+                    style="@style/SparkTinkerPin"
+                    android:text="A0" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:gravity="right"
+            android:orientation="vertical" >
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Right" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_d7"
+                    style="@style/SparkTinkerPin"
+                    android:text="D7" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Right" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_d6"
+                    style="@style/SparkTinkerPin"
+                    android:text="D6" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Right" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_d5"
+                    style="@style/SparkTinkerPin"
+                    android:text="D5" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Right" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_d4"
+                    style="@style/SparkTinkerPin"
+                    android:text="D4" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Right" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_d3"
+                    style="@style/SparkTinkerPin"
+                    android:text="D3" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Right" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_d2"
+                    style="@style/SparkTinkerPin"
+                    android:text="D2" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Right" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_d1"
+                    style="@style/SparkTinkerPin"
+                    android:text="D1" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+
+            <io.spark.core.android.ui.tinker.BgColorLinearLayout style="@style/SparkTinkerPinBG.Right" >
+
+                <com.danh32.fontify.TextView
+                    android:id="@+id/tinker_d0"
+                    style="@style/SparkTinkerPin"
+                    android:text="D0" />
+            </io.spark.core.android.ui.tinker.BgColorLinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/tinker_logo"
+        android:layout_width="135dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/tinker_logo_temp" />
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        layout="@layout/tinker_instructions"
+        android:visibility="gone" />
+
+</RelativeLayout>

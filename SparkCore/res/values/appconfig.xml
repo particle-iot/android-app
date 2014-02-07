@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="prod_hostname">api.spark.io</string>
+    <string name="staging_hostname">staging.api.spark.io</string>
+
+    <bool name="use_staging">false</bool>
+
+    <integer name="core_name_limit">32</integer>
+
+    <string name="api_version">v1</string>
+    <string name="api_param_access_token">access_token</string>
+    <string name="api_url_scheme">https</string>
+
+    <integer name="api_host_port">443</integer>
+
+    <!-- Smart Config params -->
+    <string name="smart_config_hello_listen_address">224.0.1.187</string>
+
+    <integer name="smart_config_hello_port">5683</integer>
+    <integer name="smart_config_hello_msg_length">19</integer>
+
+    <string name="smart_config_default_aes_key">sparkdevices2013</string>
+
+</resources>

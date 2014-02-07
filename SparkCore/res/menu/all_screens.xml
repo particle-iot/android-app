@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_log_out"
+        android:orderInCategory="200"
+        android:showAsAction="never"
+        android:title="@string/log_out"/>
+    <item
+        android:orderInCategory="200"
+        android:showAsAction="never"
+        android:title="@string/help_">
+        <menu>
+            <item
+                android:id="@+id/action_support"
+                android:title="@string/support"/>
+            <item
+                android:id="@+id/action_spark_homepage"
+                android:title="@string/spark_homepage"/>
+            <item
+                android:id="@+id/action_build_your_own_core_app"
+                android:title="@string/build_your_own_core_app"/>
+            <item
+                android:id="@+id/action_documentation"
+                android:title="@string/documentation"/>
+            <item
+                android:id="@+id/action_contribute"
+                android:title="@string/contribute"/>
+            <item
+                android:id="@+id/action_report_a_bug"
+                android:title="@string/report_a_bug"/>
+        </menu>
+    </item>
+
+</menu>

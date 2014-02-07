@@ -1,0 +1,49 @@
+<resources>
+
+    <!-- named colors from app spec -->
+    <color name="cyan">#00ACED</color>
+    <color name="emerald">#2ECC71</color>
+    <color name="sunflower">#F1C40F</color>
+    <color name="alizarin">#E74C3C</color>
+
+    <!-- others -->
+    <color name="link_text_bg">#19FFFFFF</color>
+    <color name="form_box_bg">#19000000</color>
+    <color name="cores_list_bg">#2E2F32</color>
+    <color name="cores_list_text">#6F717D</color>
+    <color name="cores_list_darker">#201F24</color>
+    <color name="failure_red">#ED0049</color>
+
+    <array name="core_colors">
+        <item>#1ABC9C</item>
+        <item>#16A085</item>
+        <item>#2ECC71</item>
+        <item>#27AE60</item>
+        <item>#3498DB</item>
+        <item>#2980B9</item>
+        <item>#9B59B6</item>
+        <item>#8E44AD</item>
+        <item>#F1C40F</item>
+        <item>#F39C12</item>
+        <item>#E67E22</item>
+        <item>#D35400</item>
+        <item>#E74C3C</item>
+        <item>#C0392B</item>
+        <item>#ECF0F1</item>
+        <item>#95A5A6</item>
+        <item>#7F8C8D</item>
+    </array>
+
+    <!-- tinker -->
+    <color name="tinker_instructions_bg">#A5000000</color>
+    <color name="tinker_pin_bg">#4C000000</color>
+    <color name="tinker_pin_bg_selected">#B2000000</color>
+    <color name="tinker_pin_bg_muted">#19000000</color>
+    <color name="tinker_pin_text_muted">#19FFFFFF</color>
+    <color name="tinker_pin_text_dark">#b2000000</color>
+    <color name="tinker_selection_overlay_bg">#7F000000</color>
+    <color name="tinker_selection_overlay_item_bg">#33000000</color>
+    <color name="tinker_selection_overlay_item_selected_bg">#66000000</color>
+    <color name="tinker_bar_graph_background">#7f000000</color>
+
+</resources>

@@ -1,0 +1,17 @@
+<resources>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">email</string>
+    <string name="prompt_password">password</string>
+    <string name="action_sign_up">Sign Up</string>
+    <string name="action_log_in">Log In</string>
+    <string name="action_forgot_password">&lt;u&gt;I forgot my password&lt;/u&gt;</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="i_already_have_an_account">&lt;u&gt;I already have an account&lt;/u&gt;</string>
+    <string name="sign_up_fine_print"><![CDATA[By clicking "Sign Up" you are indicating that you have read and agree to the <a href="https://www.spark.io/tos">Terms of Service</a> and <a href="https://www.spark.io/privacy">Privacy Policy.</a>]]></string>
+    <string name="i_dont_have_an_account">&lt;u&gt;I don\'t have an account&lt;/u&gt;</string>
+
+</resources>

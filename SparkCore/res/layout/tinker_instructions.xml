@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tinker_instructions"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/tinker_instructions_bg" >
+
+    <!-- This layout below isn't useless, it confines all the children to @dimen/phone_width -->
+
+    <RelativeLayout
+        android:layout_width="@dimen/content_width"
+        android:layout_height="445dp"
+        android:layout_centerInParent="true"
+        tools:ignore="UselessParent" >
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="-122dp"
+            android:src="@drawable/point_at_d7_temp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="50dip"
+            android:paddingRight="50dip" >
+
+            <com.danh32.fontify.TextView
+                style="@style/SparkText.Instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dip"
+                android:gravity="center"
+                android:text="@string/your_core_is_set_up" />
+
+            <com.danh32.fontify.TextView
+                style="@style/SparkText.Instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dip"
+                android:text="@string/welcome_to_tinker"
+                android:textSize="17sp" />
+
+            <com.danh32.fontify.TextView
+                style="@style/SparkText.Instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dip"
+                android:text="@string/tinker_instructions_1" />
+
+            <com.danh32.fontify.TextView
+                style="@style/SparkText.Instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dip"
+                android:text="@string/tinker_instructions_2" />
+
+            <com.danh32.fontify.TextView
+                android:id="@+id/tinker_instructions_3"
+                style="@style/SparkText.Instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dip"
+                android:bufferType="spannable"
+                android:text="@string/tinker_instructions_3" />
+
+            <com.danh32.fontify.TextView
+                style="@style/SparkText.Instructions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="23dip"
+                android:text="@string/tinker_instructions_4" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

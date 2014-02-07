@@ -1,0 +1,33 @@
+# Android Generated Files:
+bin
+gen
+lint.xml
+
+# Eclipse Files:
+.project
+.classpath
+.settings
+.checkstyle
+
+# IntelliJ IDEA Files:
+.idea
+*.iml
+*.ipr
+*.iws
+classes
+gen-external-apklibs
+
+# Maven Files:
+target
+release.properties
+pom.xml.*
+
+# Ant Files:
+ant.properties
+local.properties
+proguard.cfg
+proguard-project.txt
+
+# Other Files:
+.DS_Store
+tmp

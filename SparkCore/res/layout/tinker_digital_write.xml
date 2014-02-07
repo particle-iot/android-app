@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tinker_digital_write_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_vertical|right"
+    android:gravity="center_vertical"
+    android:orientation="horizontal" >
+
+    <com.danh32.fontify.TextView
+        android:id="@+id/tinker_digital_write_value"
+        style="@style/SparkText"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:gravity="center_vertical|right"
+        android:text="HIGH"
+        android:textSize="18sp" />
+
+</LinearLayout>

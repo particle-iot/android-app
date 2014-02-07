@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/form_box_bg"
+    android:orientation="vertical"
+    android:paddingBottom="44dp" >
+
+    <com.danh32.fontify.TextView
+        android:id="@+id/header_text"
+        style="@style/FormLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/form_box_bg"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1.4"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical" >
+
+        <com.danh32.fontify.TextView
+            style="@style/FormLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:lineSpacingMultiplier="1.2"
+            android:text="@string/name_the_core_thats_shouting_rainbows" />
+
+        <com.danh32.fontify.EditText
+            android:id="@+id/core_name"
+            style="@style/SparkEditText"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="8dp"
+            android:imeActionId="@+id/name_core"
+            android:imeActionLabel="@string/ok"
+            android:imeOptions="actionUnspecified"
+            android:inputType="none"
+            android:maxLength="@integer/core_name_limit"
+            android:selectAllOnFocus="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <com.danh32.fontify.Button
+                android:id="@+id/ok_button"
+                style="@style/SparkButton"
+                android:background="@drawable/blue_button_selector"
+                android:text="@string/ok" />
+
+            <ProgressBar
+                android:id="@+id/progress_indicator"
+                style="@style/SparkSpinner"
+                android:layout_alignLeft="@id/ok_button"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>
