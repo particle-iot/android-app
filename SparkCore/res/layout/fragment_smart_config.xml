@@ -126,7 +126,7 @@
                 android:text="@string/custom_aes_key"
                 android:textColor="#7FFFFFFF"
                 android:textSize="@dimen/text_micro"
-                fontify:font="@string/gotham_book" />
+                fontify:font="@string/font_light" />
         </LinearLayout>
 
         <com.danh32.fontify.EditText

@@ -25,6 +25,6 @@
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:textColor="@color/cores_list_text"
         android:textSize="@dimen/text_medium"
-        fontify:font="@string/gotham_book" />
+        fontify:font="@string/font_light" />
 
 </LinearLayout>

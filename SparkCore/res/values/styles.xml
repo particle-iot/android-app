@@ -24,7 +24,7 @@
     </style>
 
     <style name="FinePrint" parent="android:Widget.Holo.TextView">
-        <item name="font">@string/gotham_book</item>
+        <item name="font">@string/font_light</item>
         <item name="android:textSize">@dimen/text_small</item>
         <item name="android:textColor">#99FFFFFF</item>
         <item name="android:linksClickable">true</item>
@@ -33,7 +33,7 @@
     </style>
 
     <style name="LinkText" parent="android:Widget.Holo.TextView">
-        <item name="font">@string/gotham_book</item>
+        <item name="font">@string/font_light</item>
         <item name="android:textSize">@dimen/text_small</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:clickable">true</item>
@@ -44,7 +44,7 @@
     </style>
 
     <style name="SparkEditText" parent="android:Widget.Holo.EditText">
-        <item name="font">@string/gotham_book</item>
+        <item name="font">@string/font_light</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:textColorHint">#7F000000</item>
         <item name="android:textColor">#E5000000</item>
@@ -65,14 +65,14 @@
     </style>
 
     <style name="FormLabel" parent="android:Widget.Holo.Light.TextView">
-        <item name="font">@string/gotham_book</item>
+        <item name="font">@string/font_light</item>
         <item name="android:textSize">@dimen/text_small</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
 
     <style name="SparkButton" parent="android:Widget.Holo.Light.Button">
-        <item name="font">@string/gotham_medium</item>
+        <item name="font">@string/font_medium</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">16sp</item>
@@ -91,7 +91,7 @@
     </style>
 
     <style name="SparkTinkerPin" parent="android:Widget.Holo.Light.TextView">
-        <item name="font">@string/gotham_medium</item>
+        <item name="font">@string/font_medium</item>
         <item name="android:layout_width">34dip</item>
         <item name="android:layout_height">34dip</item>
         <item name="android:textSize">@dimen/text_small</item>
@@ -123,14 +123,14 @@
     </style>
 
     <style name="SparkText" parent="android:Widget.Holo.Light.TextView">
-        <item name="font">@string/gotham_book</item>
+        <item name="font">@string/font_light</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@android:color/white</item>
     </style>
 
     <style name="SparkText.Instructions">
-        <item name="font">@string/gotham_book</item>
+        <item name="font">@string/font_light</item>
         <item name="android:textSize">15sp</item>
     </style>
 
@@ -142,7 +142,7 @@
     </style>
 
     <style name="TinkerSelectButton">
-        <item name="font">@string/gotham_book</item>
+        <item name="font">@string/font_light</item>
         <item name="android:layout_width">0dip</item>
         <item name="android:layout_height">45dip</item>
         <item name="android:gravity">center</item>

@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="gotham_light">fonts/gotham_light.otf</string>
-    <string name="gotham_medium">fonts/gotham_medium.otf</string>
-    <string name="gotham_book">fonts/gotham_book.otf</string>
-    <string name="gotham_bold">fonts/gotham_bold.otf</string>
-
+	<!-- the used fonts have to be OpenTypeFonts (.oft) - TrueTypeFonts (.ttf) are not supported -->
+    <string name="font_thin">fonts/gotham_light.otf</string>
+    <string name="font_light">fonts/gotham_book.otf</string>
+    <string name="font_medium">fonts/gotham_medium.otf</string>
+    <string name="font_bold">fonts/gotham_bold.otf</string>
 </resources>

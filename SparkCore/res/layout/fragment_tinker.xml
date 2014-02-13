@@ -167,11 +167,14 @@
 
     <ImageView
         android:id="@+id/tinker_logo"
-        android:layout_width="135dp"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/tinker_logo_temp" />
-
+        android:src="@drawable/tinker_logo_color_wheel" />
+        <!-- originally                                  -->
+        <!-- android:layout_width="135dp"                -->
+        <!-- android:src="@drawable/tinker_logo_temp" /> -->
+    
     <include
         android:layout_width="match_parent"
         android:layout_height="match_parent"
