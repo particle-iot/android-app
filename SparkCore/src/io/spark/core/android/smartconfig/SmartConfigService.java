@@ -1,6 +1,5 @@
 package io.spark.core.android.smartconfig;
 
-
 import static org.solemnsilence.util.Py.set;
 import io.spark.core.android.app.AppConfig;
 import io.spark.core.android.app.DeviceState;
@@ -34,17 +33,16 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.integrity_project.smartconfiglib.FirstTimeConfig;
 import com.integrity_project.smartconfiglib.FirstTimeConfigListener;
 
-
 /**
  * Service for handling SmartConfig operations. Can be easily started and
  * stopped via the static convenience methods startSmartConfig() and
  * stopSmartConfig()
  * 
  */
-public class SmartConfigService extends Service implements FirstTimeConfigListener {
+public class SmartConfigService extends Service implements
+		FirstTimeConfigListener {
 
 	private static final TLog log = new TLog(SmartConfigService.class);
-
 
 	public static final String EXTRA_SSID = "EXTRA_SSID";
 	public static final String EXTRA_WIFI_PASSWORD = "EXTRA_WIFI_PASSWORD";
@@ -54,9 +52,8 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 	public static final String ACTION_START_SMART_CONFIG = "ACTION_START_SMART_CONFIG";
 	public static final String ACTION_STOP_SMART_CONFIG = "ACTION_STOP_SMART_CONFIG";
 
-
-	public static void startSmartConfig(Context ctx, String ssid, String wifiPassword,
-			String gatewayIP, String aesKey) {
+	public static void startSmartConfig(Context ctx, String ssid,
+			String wifiPassword, String gatewayIP, String aesKey) {
 		if (aesKey == null || aesKey.length() != 16) {
 			aesKey = AppConfig.getSmartConfigDefaultAesKey();
 			log.i("Using default AES key for SmartConfig");
@@ -75,10 +72,8 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 				.setAction(SmartConfigService.ACTION_STOP_SMART_CONFIG));
 	}
 
-
-
-	private final ScheduledExecutorService executor = Executors.newScheduledThreadPool(4);
-
+	private final ScheduledExecutorService executor = Executors
+			.newScheduledThreadPool(4);
 
 	private LocalBroadcastManager broadcastMgr;
 	private ApiFacade api;
@@ -89,7 +84,6 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 
 	private boolean isStarted = false;
 	private boolean receivedHello = false;
-
 
 	@Override
 	public void onCreate() {
@@ -122,7 +116,6 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 			log.e("Error during first time config: ", error);
 		}
 	}
-
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -171,7 +164,6 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 			helloListener.startListener();
 			firstTimeConfig.transmitSettings();
 
-
 		} catch (Exception e) {
 			log.e("Error while transmitting settings: ", e);
 		}
@@ -198,25 +190,28 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 		stopSelf();
 	}
 
-
 	private void onHelloIdReceived(final String hexId) {
 		log.i("Core ID received via CoAP 'Hello': " + hexId);
 		receivedHello = true;
 
-		if (SmartConfigState.getClaimedButPossiblyUnnamedDeviceIds().contains(hexId)) {
+		if (SmartConfigState.getClaimedButPossiblyUnnamedDeviceIds().contains(
+				hexId)) {
 			log.i("Already claimed and named this Core: " + hexId);
 			return;
 		}
 
 		// See if this is a device we already know about
 		if (DeviceState.getDeviceById(hexId) != null) {
-			log.i("Device is alerady claimed by us but not yet offered for rename:" + hexId);
+			log.i("Device is alerady claimed by us but not yet offered for rename:"
+					+ hexId);
 			SmartConfigState.addClaimedButPossiblyUnnamedDeviceId(hexId);
-			broadcastMgr.sendBroadcast(new Intent(ApiFacade.BROADCAST_CORE_CLAIMED));
+			broadcastMgr.sendBroadcast(new Intent(
+					ApiFacade.BROADCAST_CORE_CLAIMED));
 
 		} else {
 			int delay = 2000;
-			log.i("New core found, will attempt to claim in " + delay / 1000 + " seconds.");
+			log.i("New core found, will attempt to claim in " + delay / 1000
+					+ " seconds.");
 			// HACK: wait for 2 seconds after receiving HELLO CoAP
 			EZ.runOnMainThreadDelayed(new Runnable() {
 
@@ -228,8 +223,8 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 		}
 	}
 
-	private FirstTimeConfig buildFirstTimeConfig(FirstTimeConfigListener listener, Intent intent)
-			throws Exception {
+	private FirstTimeConfig buildFirstTimeConfig(
+			FirstTimeConfigListener listener, Intent intent) throws Exception {
 		Bundle extras = intent.getExtras();
 
 		String ssid = extras.getString(EXTRA_SSID);
@@ -240,10 +235,11 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 
 		// AES key isn't being redacted below because it's public knowledge.
 		log.d("FirstTimeConfig params: SSID=" + ssid + ", wifiPassword="
-				+ Strings.getRedacted(wifiPassword) + ", gatewayIP=" + gatewayIP + ", aesKey="
-				+ aesKey);
+				+ Strings.getRedacted(wifiPassword) + ", gatewayIP="
+				+ gatewayIP + ", aesKey=" + aesKey);
 
-		return new FirstTimeConfig(listener, wifiPassword, transmissionKey, gatewayIP, ssid);
+		return new FirstTimeConfig(listener, wifiPassword, transmissionKey,
+				gatewayIP, ssid);
 	}
 
 	class HelloListener {
@@ -252,7 +248,6 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 		Set<String> hexIdsHeard = set();
 		MulticastSocket socket;
 		Future<?> future;
-
 
 		void startListener() {
 			final String addr = AppConfig.getSmartConfigHelloListenAddress();
@@ -274,9 +269,11 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 
 						// I assume this is sufficient
 						byte[] buffer = new byte[1024];
-						DatagramPacket dgram = new DatagramPacket(buffer, buffer.length);
+						DatagramPacket dgram = new DatagramPacket(buffer,
+								buffer.length);
 
-						log.d("Listening for CoAP Hello messages on " + addr + ":" + port);
+						log.d("Listening for CoAP Hello messages on " + addr
+								+ ":" + port);
 
 						while (shouldContinue.get()) {
 							// blocks until a datagram is received
@@ -316,10 +313,12 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 		}
 
 		void readCoreId(DatagramPacket dgram) {
-			log.d("Received " + dgram.getLength() + " byte datagram from " + dgram.getAddress());
-			if (dgram.getLength() != AppConfig.getSmartConfigHelloMessageLength()) {
-				log.w("Received datagram with a payload having a length of " + dgram.getLength()
-						+ ", ignoring.");
+			log.d("Received " + dgram.getLength() + " byte datagram from "
+					+ dgram.getAddress());
+			if (dgram.getLength() != AppConfig
+					.getSmartConfigHelloMessageLength()) {
+				log.w("Received datagram with a payload having a length of "
+						+ dgram.getLength() + ", ignoring.");
 				return;
 			}
 			byte[] idAsBytes = Arrays.copyOfRange(dgram.getData(), 7, 19);
@@ -333,12 +332,13 @@ public class SmartConfigService extends Service implements FirstTimeConfigListen
 
 	public static String bytesToHexString(byte[] bytes) {
 		StringBuilder sb = new StringBuilder(bytes.length * 2);
+
 		Formatter formatter = new Formatter(sb);
 		for (byte b : bytes) {
 			formatter.format("%02x", b);
 		}
+		formatter.close();
 		return sb.toString();
 	}
-
 
 }

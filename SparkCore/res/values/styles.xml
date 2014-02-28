@@ -71,13 +71,27 @@
         <item name="android:layout_height">wrap_content</item>
     </style>
 
+    <style name="SparkTinkerPinsTableLayout">
+        <item name="android:layout_width">@dimen/content_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="android:layout_marginTop">0dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:paddingBottom">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:shrinkColumns">*</item>
+        <item name="android:stretchColumns">*</item>
+    </style>
+
     <style name="SparkButton" parent="android:Widget.Holo.Light.Button">
         <item name="font">@string/font_medium</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">16sp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_height">35dp</item>
     </style>
 
     <style name="SparkSpinner" parent="android:Widget.Holo.ProgressBar.Small">
@@ -92,8 +106,8 @@
 
     <style name="SparkTinkerPin" parent="android:Widget.Holo.Light.TextView">
         <item name="font">@string/font_medium</item>
-        <item name="android:layout_width">34dip</item>
-        <item name="android:layout_height">34dip</item>
+        <item name="android:layout_width">32dip</item>
+        <item name="android:layout_height">32dip</item>
         <item name="android:textSize">@dimen/text_small</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
@@ -102,7 +116,7 @@
     </style>
 
     <style name="SparkTinkerPinBG">
-        <item name="android:padding">8dp</item>
+        <item name="android:padding">5dp</item>
         <item name="android:layout_marginBottom">1dp</item>
         <item name="android:clickable">true</item>
         <item name="android:orientation">horizontal</item>
@@ -118,8 +132,8 @@
     </style>
 
     <style name="SparkTinkerPinBG.Right">
-        <item name="android:gravity">right|center_vertical</item>
         <item name="android:layout_gravity">right</item>
+        <item name="android:gravity">right|center_vertical</item>
     </style>
 
     <style name="SparkText" parent="android:Widget.Holo.Light.TextView">
@@ -143,34 +157,34 @@
 
     <style name="TinkerSelectButton">
         <item name="font">@string/font_light</item>
-        <item name="android:layout_width">0dip</item>
-        <item name="android:layout_height">45dip</item>
+        <item name="android:layout_width">1dip</item>
+        <item name="android:layout_height">40dip</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_weight">1</item>
     </style>
 
     <style name="TinkerSelectButtonBg">
         <item name="android:orientation">horizontal</item>
-        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
     </style>
 
     <style name="TinkerProgress" parent="android:Widget.ProgressBar.Horizontal">
         <item name="android:layout_width">60dip</item>
-        <item name="android:layout_height">10dip</item>
-        <item name="android:layout_marginLeft">10dip</item>
+        <item name="android:layout_height">8dip</item>
+        <item name="android:layout_marginLeft">8dip</item>
         <item name="android:indeterminate">false</item>
         <item name="android:progressDrawable">@drawable/progress_emerald</item>
     </style>
 
     <style name="TinkerSeekBar" parent="android:Widget.ProgressBar.Horizontal">
-        <item name="android:layout_width">155dip</item>
+        <item name="android:layout_width">155dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">5dip</item>
-        <item name="android:layout_marginRight">5dip</item>
-        <item name="android:minHeight">10dip</item>
-        <item name="android:maxHeight">10dip</item>
+        <item name="android:layout_marginLeft">3dip</item>
+        <item name="android:layout_marginRight">3dip</item>
+        <item name="android:minHeight">8dip</item>
+        <item name="android:maxHeight">8dip</item>
         <item name="android:indeterminate">false</item>
         <item name="android:progressDrawable">@drawable/progress_sunflower</item>
         <item name="android:thumb">@drawable/white_circle</item>

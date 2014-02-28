@@ -1,6 +1,9 @@
 package io.spark.core.android.util;
 
 import static org.solemnsilence.util.Py.truthy;
+
+import com.google.common.net.InetAddresses;
+
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.DhcpInfo;
@@ -8,8 +11,6 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.text.format.Formatter;
-
 
 public class NetConnectionHelper {
 
@@ -21,7 +22,8 @@ public class NetConnectionHelper {
 		// avoid retaining any context but the application context unless truly
 		// necessary
 		this.context = context.getApplicationContext();
-		this.wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+		this.wifiManager = (WifiManager) context
+				.getSystemService(Context.WIFI_SERVICE);
 		this.connManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 	}
@@ -45,7 +47,8 @@ public class NetConnectionHelper {
 	}
 
 	public boolean isConnectedViaWifi() {
-		NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		NetworkInfo networkInfo = connManager
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 		if (networkInfo == null) {
 			return false;
 		} else {
@@ -62,7 +65,7 @@ public class NetConnectionHelper {
 		if (dhcpInfo == null) {
 			return null;
 		} else {
-			return Formatter.formatIpAddress(dhcpInfo.gateway);
+			return InetAddresses.fromInteger(dhcpInfo.gateway).getHostAddress();
 		}
 	}
 
@@ -79,6 +82,5 @@ public class NetConnectionHelper {
 		}
 		return ssid;
 	}
-
 
 }

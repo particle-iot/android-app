@@ -1,7 +1,7 @@
 package io.spark.core.android.ui;
 
 import static org.solemnsilence.util.Py.truthy;
-import io.spark.core.test.android.R;
+import io.spark.core.android.R;
 import io.spark.core.android.app.DeviceState;
 import io.spark.core.android.cloud.ApiFacade;
 import io.spark.core.android.cloud.requestservice.SimpleSparkApiService;

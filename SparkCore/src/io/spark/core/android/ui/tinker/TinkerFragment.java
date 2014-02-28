@@ -24,7 +24,9 @@ import org.solemnsilence.util.TLog;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,7 +34,12 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Bitmap;
+import android.graphics.Matrix;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.support.v4.widget.SlidingPaneLayout;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
@@ -44,8 +51,9 @@ import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.TextView;
-
+import android.widget.ImageView;
 
 /**
  * A fragment representing a single Core detail screen. This fragment is either
@@ -54,16 +62,13 @@ import android.widget.TextView;
  */
 public class TinkerFragment extends BaseFragment implements OnClickListener {
 
-
 	private static final TLog log = new TLog(TinkerFragment.class);
-
 
 	/**
 	 * The fragment argument representing the item ID that this fragment
 	 * represents.
 	 */
 	public static final String ARG_DEVICE_ID = "ARG_DEVICE_ID";
-
 
 	List<Pin> aPins = Py.list();
 	List<Pin> dPins = Py.list();
@@ -98,13 +103,13 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 	public TinkerFragment() {
 	}
 
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 		if (getArguments().containsKey(ARG_DEVICE_ID)) {
-			device = DeviceState.getDeviceById(getArguments().getString(ARG_DEVICE_ID));
+			device = DeviceState.getDeviceById(getArguments().getString(
+					ARG_DEVICE_ID));
 		}
 		tinkerReceiver = new TinkerReceiver();
 		namingCompleteReceiver = new NamingCompleteReceiver();
@@ -127,10 +132,14 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 	@Override
 	public void onStart() {
 		super.onStart();
-		broadcastMgr.registerReceiver(tinkerReceiver, tinkerReceiver.getFilter());
-		broadcastMgr.registerReceiver(namingCompleteReceiver, namingCompleteReceiver.getFilter());
-		broadcastMgr.registerReceiver(namingFailedReceiver, namingFailedReceiver.getFilter());
-		broadcastMgr.registerReceiver(namingStartedReceiver, namingStartedReceiver.getFilter());
+		broadcastMgr.registerReceiver(tinkerReceiver,
+				tinkerReceiver.getFilter());
+		broadcastMgr.registerReceiver(namingCompleteReceiver,
+				namingCompleteReceiver.getFilter());
+		broadcastMgr.registerReceiver(namingFailedReceiver,
+				namingFailedReceiver.getFilter());
+		broadcastMgr.registerReceiver(namingStartedReceiver,
+				namingStartedReceiver.getFilter());
 	}
 
 	@Override
@@ -152,21 +161,21 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.action_rename_core:
-				new NamingHelper(getActivity(), api).showRenameDialog(device);
-				return true;
+		case R.id.action_rename_core:
+			new NamingHelper(getActivity(), api).showRenameDialog(device);
+			return true;
 
-			case R.id.action_reflash_tinker:
-				api.reflashTinker(device.id);
-				return true;
+		case R.id.action_reflash_tinker:
+			api.reflashTinker(device.id);
+			return true;
 
-			case R.id.action_clear_tinker:
-				prefs.clearTinker(device.id);
-				for (Pin pin : allPins) {
-					pin.setConfiguredAction(PinAction.NONE);
-					pin.reset();
-				}
-				return true;
+		case R.id.action_clear_tinker:
+			prefs.clearTinker(device.id);
+			for (Pin pin : allPins) {
+				pin.setConfiguredAction(PinAction.NONE);
+				pin.reset();
+			}
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -206,22 +215,33 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		dPins.add(new Pin((TextView) Ui.findView(this, R.id.tinker_d7),
 				PinType.D, "D7"));
 
+		// additional digitalPins (rx/tx if not used for USART)
+		dPins.add(new Pin((TextView) Ui.findView(this, R.id.tinker_rx),
+				PinType.X, "RX"));
+		dPins.add(new Pin((TextView) Ui.findView(this, R.id.tinker_tx),
+				PinType.X, "TX"));
+		// additional virtual Pin for RGB-LED
+		aPins.add(new Pin((TextView) Ui.findView(this, R.id.tinker_cl),
+				PinType.A, "CL"));
+
 		allPins.addAll(aPins);
 		allPins.addAll(dPins);
 
 		for (Pin pin : allPins) {
 			pinsByName.put(pin.name, pin);
-			pin.setConfiguredAction(
-					prefs.getPinFunction(device.id, pin.name));
+			pin.setConfiguredAction(prefs.getPinFunction(device.id, pin.name));
 		}
 
 		digitalWritePins.addAll(allPins);
 		digitalReadPins.addAll(allPins);
 		analogWritePins.addAll(Py.list(aPins.get(0), aPins.get(1),
 				aPins.get(4), aPins.get(5), aPins.get(6), aPins.get(7),
-				dPins.get(0), dPins.get(1)));
+				dPins.get(0), dPins.get(1), aPins.get(8)));
 		analogReadPins.addAll(aPins);
 
+		// start of with RGB-LED control deactivated
+		Ui.findView(this, R.id.tinker_rgb).setTag(false);
+		Ui.findView(this, R.id.tinker_color_selector).setTag(0x00000000);
 	}
 
 	private void setupListeners() {
@@ -262,6 +282,123 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		}
 
 		// Set up other listeners
+		Ui.findView(this, R.id.tinker_rgb).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						boolean bState = !(Boolean) v.getTag();
+
+						View vChild = Ui.findView(v, R.id.tinker_logo_cogg_led);
+						ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) vChild
+								.getLayoutParams();
+						View colorSelector = Ui.findView(
+								(Activity) v.getContext(),
+								R.id.tinker_color_selector);
+
+						int m = bState ? 0 : 2;
+						int c = (Integer) colorSelector.getTag();
+
+						if (bState) {
+							c |= 0x7F000000;
+							v.setBackgroundColor(c);
+							colorSelector.setTag(c);
+						} else {
+							c &= 0x00FFFFFF;
+							v.setBackgroundColor(0xFF000000);
+							colorSelector.setTag(c);
+							colorSelector.setVisibility(View.GONE);
+						}
+
+						((Vibrator) v.getContext().getSystemService(
+								Service.VIBRATOR_SERVICE)).vibrate(25);
+						api.analogWrite(device.id, "CL", 0, c);
+
+						lp.setMargins(m, m, m, m);
+						vChild.setLayoutParams(lp);
+						v.setTag(bState);
+					}
+				});
+
+		Ui.findView(this, R.id.tinker_rgb).setOnLongClickListener(
+				new OnLongClickListener() {
+
+					@Override
+					public boolean onLongClick(View v) {
+						if (!(Boolean) v.getTag())
+							v.callOnClick(); // make sure LED control is active
+
+						View vCS = Ui.findView((Activity) v.getContext(),
+								R.id.tinker_color_selector);
+
+						vCS.setVisibility(vCS.getVisibility() != View.VISIBLE ? View.VISIBLE
+								: View.GONE);
+
+						return true;
+					}
+				});
+
+		Ui.findView(this, R.id.tinker_color_selector).setOnTouchListener(
+				new OnTouchListener() {
+
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						int color = 0;
+
+						switch (event.getAction()) {
+						case MotionEvent.ACTION_DOWN:
+
+							((SlidingPaneLayout) Ui.findView(
+									(Activity) v.getContext(),
+									R.id.sliding_pane_layout))
+									.requestDisallowInterceptTouchEvent(true);
+
+						case MotionEvent.ACTION_MOVE:
+							// convert event coordinates to resized image
+							// coordinates
+							float[] xy = new float[] { event.getX(),
+									event.getY() };
+							Matrix mx = new Matrix();
+							Bitmap bmp = ((BitmapDrawable) ((ImageView) v)
+									.getDrawable()).getBitmap();
+							((ImageView) v).getImageMatrix().invert(mx);
+							mx.mapPoints(xy);
+							if (xy[0] < 0)
+								xy[0] = 0;
+							else if (xy[0] > bmp.getWidth() - 1)
+								xy[0] = bmp.getWidth() - 1;
+							if (xy[1] < 0)
+								xy[1] = 0;
+							else if (xy[1] > bmp.getHeight() - 1)
+								xy[1] = bmp.getHeight() - 1;
+
+							color = bmp.getPixel((int) xy[0], (int) xy[1]);
+							if ((color & 0xFF000000) == 0xFF000000) {
+								Ui.findView((Activity) v.getContext(),
+										R.id.tinker_rgb).setBackgroundColor(
+										color);
+								v.setTag(color);
+							}
+							return true;
+						case MotionEvent.ACTION_UP:
+							((Vibrator) v.getContext().getSystemService(
+									Service.VIBRATOR_SERVICE)).vibrate(25);
+							api.analogWrite(device.id, "CL",
+									color & 0x7FFFFFFF, (Integer) v.getTag());
+
+							((SlidingPaneLayout) Ui.findView(
+									(Activity) v.getContext(),
+									R.id.sliding_pane_layout))
+									.requestDisallowInterceptTouchEvent(false);
+						case MotionEvent.ACTION_OUTSIDE:
+						case MotionEvent.ACTION_CANCEL:
+							return true;
+						}
+
+						return false;
+					}
+				});
+
 		Ui.findView(this, R.id.tinker_main).setOnClickListener(this);
 	}
 
@@ -269,7 +406,8 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		View instructions = Ui.findView(this, R.id.tinker_instructions);
 
 		// set cyan on "D7" text
-		TextView instructions3 = Ui.findView(instructions, R.id.tinker_instructions_3);
+		TextView instructions3 = Ui.findView(instructions,
+				R.id.tinker_instructions_3);
 		String d7 = "D7";
 		String instructions3Text = getString(R.string.tinker_instructions_3);
 		int idx = instructions3Text.indexOf(d7);
@@ -295,25 +433,25 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		if (selectedPin.getConfiguredAction() != PinAction.NONE) {
 			// Perform requested action
 			switch (selectedPin.getConfiguredAction()) {
-				case ANALOG_READ:
-					doAnalogRead(selectedPin);
-					break;
-				case ANALOG_WRITE:
-					if (selectedPin.isAnalogWriteMode()) {
-						selectedPin.showAnalogWriteValue();
-						unmutePins();
-					} else {
-						doAnalogWrite(selectedPin);
-					}
-					break;
-				case DIGITAL_READ:
-					doDigitalRead(selectedPin);
-					break;
-				case DIGITAL_WRITE:
-					doDigitalWrite(selectedPin);
-					break;
-				default:
-					break;
+			case ANALOG_READ:
+				doAnalogRead(selectedPin);
+				break;
+			case ANALOG_WRITE:
+				if (selectedPin.isAnalogWriteMode()) {
+					selectedPin.showAnalogWriteValue();
+					unmutePins();
+				} else {
+					doAnalogWrite(selectedPin);
+				}
+				break;
+			case DIGITAL_READ:
+				doDigitalRead(selectedPin);
+				break;
+			case DIGITAL_WRITE:
+				doDigitalWrite(selectedPin);
+				break;
+			default:
+				break;
 			}
 		} else {
 			showTinkerSelect(selectedPin);
@@ -323,39 +461,42 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 	private void showTinkerSelect(Pin pin) {
 		// No current action on the pin
 		mutePinsExcept(pin);
-		toggleViewVisibilityWithFade(R.id.tinker_logo, false);
+		toggleViewVisibilityWithFade(R.id.tinker_logo_cogg, false);
 
-		final View selectDialogView = getActivity().getLayoutInflater().inflate(
-				R.layout.tinker_select, null);
+		final View selectDialogView = getActivity().getLayoutInflater()
+				.inflate(R.layout.tinker_select, null);
 
 		selectDialog = new AlertDialog.Builder(getActivity(),
 				R.style.AppTheme_DialogNoDimBackground)
-				.setView(selectDialogView)
-				.setCancelable(true)
+				.setView(selectDialogView).setCancelable(true)
 				.setOnCancelListener(new OnCancelListener() {
 
 					@Override
 					public void onCancel(DialogInterface dialog) {
 						dialog.dismiss();
 					}
-				})
-				.create();
+				}).create();
 		selectDialog.setCanceledOnTouchOutside(true);
 		selectDialog.setOnDismissListener(new OnDismissListener() {
 
 			@Override
 			public void onDismiss(DialogInterface dialog) {
 				unmutePins();
-				toggleViewVisibilityWithFade(R.id.tinker_logo, true);
+				toggleViewVisibilityWithFade(R.id.tinker_logo_cogg, true);
 				selectDialog = null;
 			}
 		});
 
-		final View analogRead = Ui.findView(selectDialogView, R.id.tinker_button_analog_read);
-		final View analogWrite = Ui.findView(selectDialogView, R.id.tinker_button_analog_write);
-		final View digitalRead = Ui.findView(selectDialogView, R.id.tinker_button_digital_read);
-		final View digitalWrite = Ui.findView(selectDialogView, R.id.tinker_button_digital_write);
-		final List<View> allButtons = list(analogRead, analogWrite, digitalRead, digitalWrite);
+		final View analogRead = Ui.findView(selectDialogView,
+				R.id.tinker_button_analog_read);
+		final View analogWrite = Ui.findView(selectDialogView,
+				R.id.tinker_button_analog_write);
+		final View digitalRead = Ui.findView(selectDialogView,
+				R.id.tinker_button_digital_read);
+		final View digitalWrite = Ui.findView(selectDialogView,
+				R.id.tinker_button_digital_write);
+		final List<View> allButtons = list(analogRead, analogWrite,
+				digitalRead, digitalWrite);
 
 		analogRead.setOnTouchListener(new OnTouchListener() {
 
@@ -423,29 +564,30 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 			analogWrite.setVisibility(View.VISIBLE);
 		}
 
-		((TextView) selectDialogView.findViewById(R.id.tinker_select_pin)).setText(pin.name);
+		((TextView) selectDialogView.findViewById(R.id.tinker_select_pin))
+				.setText(pin.name);
 
 		PinAction action = pin.getConfiguredAction();
 		switch (action) {
-			case ANALOG_READ:
-				setTinkerSelectButtonSelected(analogRead, allButtons);
-				break;
+		case ANALOG_READ:
+			setTinkerSelectButtonSelected(analogRead, allButtons);
+			break;
 
-			case ANALOG_WRITE:
-				setTinkerSelectButtonSelected(analogWrite, allButtons);
-				break;
+		case ANALOG_WRITE:
+			setTinkerSelectButtonSelected(analogWrite, allButtons);
+			break;
 
-			case DIGITAL_READ:
-				setTinkerSelectButtonSelected(digitalRead, allButtons);
-				break;
+		case DIGITAL_READ:
+			setTinkerSelectButtonSelected(digitalRead, allButtons);
+			break;
 
-			case DIGITAL_WRITE:
-				setTinkerSelectButtonSelected(digitalWrite, allButtons);
-				break;
+		case DIGITAL_WRITE:
+			setTinkerSelectButtonSelected(digitalWrite, allButtons);
+			break;
 
-			case NONE:
-				setTinkerSelectButtonSelected(null, allButtons);
-				break;
+		case NONE:
+			setTinkerSelectButtonSelected(null, allButtons);
+			break;
 		}
 
 		selectDialog.show();
@@ -454,14 +596,14 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		noIReallyMeanItIWantThisToBeTransparent(decorView);
 	}
 
-	private void setTinkerSelectButtonSelected(View selectButtonView, List<View> allButtons) {
+	private void setTinkerSelectButtonSelected(View selectButtonView,
+			List<View> allButtons) {
 		for (View button : allButtons) {
-			Ui.findView(button, R.id.tinker_button_color)
-					.setVisibility((button == selectButtonView) ? View.VISIBLE : View.INVISIBLE);
-			button.setBackgroundResource(
-					(button == selectButtonView)
-							? R.color.tinker_selection_overlay_item_selected_bg
-							: R.color.tinker_selection_overlay_item_bg);
+			Ui.findView(button, R.id.tinker_button_color).setVisibility(
+					(button == selectButtonView) ? View.VISIBLE
+							: View.INVISIBLE);
+			button.setBackgroundResource((button == selectButtonView) ? R.color.tinker_selection_overlay_item_selected_bg
+					: R.color.tinker_selection_overlay_item_bg);
 		}
 	}
 
@@ -482,9 +624,7 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		final View view = Ui.findView(this, viewId);
 		int shortAnimTime = 150; // ms
 		view.setVisibility(View.VISIBLE);
-		view.animate()
-				.setDuration(shortAnimTime)
-				.alpha(show ? 1 : 0)
+		view.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0)
 				.setListener(new AnimatorListenerAdapter() {
 
 					@Override
@@ -511,34 +651,33 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 
 	private void hideTinkerSelect() {
 		// Reset tinker select dialog state
-		toggleViewVisibilityWithFade(R.id.tinker_logo, true);
+		toggleViewVisibilityWithFade(R.id.tinker_logo_cogg, true);
 	}
-
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.tinker_button_analog_read:
-				onFunctionSelected(selectedPin, PinAction.ANALOG_READ);
-				break;
-			case R.id.tinker_button_analog_write:
-				onFunctionSelected(selectedPin, PinAction.ANALOG_WRITE);
-				break;
-			case R.id.tinker_button_digital_read:
-				onFunctionSelected(selectedPin, PinAction.DIGITAL_READ);
-				break;
-			case R.id.tinker_button_digital_write:
-				onFunctionSelected(selectedPin, PinAction.DIGITAL_WRITE);
-				break;
-			case R.id.tinker_main:
-				for (Pin pin : allPins) {
-					if (pin.isAnalogWriteMode()) {
-						pin.showAnalogWriteValue();
-					}
+		case R.id.tinker_button_analog_read:
+			onFunctionSelected(selectedPin, PinAction.ANALOG_READ);
+			break;
+		case R.id.tinker_button_analog_write:
+			onFunctionSelected(selectedPin, PinAction.ANALOG_WRITE);
+			break;
+		case R.id.tinker_button_digital_read:
+			onFunctionSelected(selectedPin, PinAction.DIGITAL_READ);
+			break;
+		case R.id.tinker_button_digital_write:
+			onFunctionSelected(selectedPin, PinAction.DIGITAL_WRITE);
+			break;
+		case R.id.tinker_main:
+			for (Pin pin : allPins) {
+				if (pin.isAnalogWriteMode()) {
+					pin.showAnalogWriteValue();
 				}
-				unmutePins();
-				// hideTinkerSelect();
-				break;
+			}
+			unmutePins();
+			// hideTinkerSelect();
+			break;
 		}
 	}
 
@@ -556,7 +695,7 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 			selectDialog.dismiss();
 			selectDialog = null;
 		}
-		toggleViewVisibilityWithFade(R.id.tinker_logo, true);
+		toggleViewVisibilityWithFade(R.id.tinker_logo_cogg, true);
 
 		selectedPin.reset();
 		selectedPin.setConfiguredAction(action);
@@ -573,12 +712,13 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 
 	private void doAnalogWrite(final Pin pin) {
 		mutePinsExcept(pin);
-		toggleViewVisibilityWithFade(R.id.tinker_logo, false);
+		toggleViewVisibilityWithFade(R.id.tinker_logo_cogg, false);
 		pin.showAnalogWrite(new OnAnalogWriteListener() {
 
 			@Override
 			public void onAnalogWrite(int value) {
-				api.analogWrite(device.id, pin.name, pin.getAnalogValue(), value);
+				api.analogWrite(device.id, pin.name, pin.getAnalogValue(),
+						value);
 				for (Pin pin : allPins) {
 					if (pin.isAnalogWriteMode()) {
 						pin.showAnalogWriteValue();
@@ -601,8 +741,7 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 	private void doDigitalWrite(Pin pin) {
 		pin.animateYourself();
 		DigitalValue currentValue = pin.getDigitalValue();
-		DigitalValue newValue = (currentValue == DigitalValue.HIGH)
-				? DigitalValue.LOW
+		DigitalValue newValue = (currentValue == DigitalValue.HIGH) ? DigitalValue.LOW
 				: DigitalValue.HIGH;
 		api.digitalWrite(device.id, pin.name, currentValue, newValue);
 		// pin.showDigitalWrite(newValue);
@@ -613,7 +752,6 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		return R.layout.fragment_tinker;
 	}
 
-
 	private void onTinkerResponse(TinkerResponse response) {
 		log.d("Tinker response received: " + response);
 
@@ -623,7 +761,8 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		}
 
 		if (response.errorMakingRequest) {
-			ErrorsDelegate errorsDelegate = ((BaseActivity) getActivity()).getErrorsDelegate();
+			ErrorsDelegate errorsDelegate = ((BaseActivity) getActivity())
+					.getErrorsDelegate();
 			errorsDelegate.showTinkerError();
 		}
 
@@ -661,34 +800,35 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 			log.e("TinkerResponse: bad pin name");
 			return false;
 		}
-		if (response.responseValue < 0 || response.responseValue > 4095) {
+		if (response.responseValue < 0 || response.responseValue > 4095
+				&& response.pin != "CL") {
 			log.e("TinkerResponse: bad response value");
 			return false;
 		}
 		return true;
 	}
 
-
-
 	private class TinkerReceiver extends BroadcastReceiver {
 
 		IntentFilter getFilter() {
-			return new IntentFilter(ApiFacade.BROADCAST_TINKER_RESPONSE_RECEIVED);
+			return new IntentFilter(
+					ApiFacade.BROADCAST_TINKER_RESPONSE_RECEIVED);
 		}
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			TinkerResponse response = intent.getParcelableExtra(ApiFacade.EXTRA_TINKER_RESPONSE);
+			TinkerResponse response = intent
+					.getParcelableExtra(ApiFacade.EXTRA_TINKER_RESPONSE);
 			onTinkerResponse(response);
 		}
 
 	}
 
-
 	private class NamingFailedReceiver extends BroadcastReceiver {
 
 		IntentFilter getFilter() {
-			return new IntentFilter(ApiFacade.BROADCAST_CORE_NAMING_REQUEST_COMPLETE);
+			return new IntentFilter(
+					ApiFacade.BROADCAST_CORE_NAMING_REQUEST_COMPLETE);
 		}
 
 		@Override
@@ -701,7 +841,6 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		}
 
 	}
-
 
 	private class NamingStartedReceiver extends BroadcastReceiver {
 
@@ -720,7 +859,6 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 
 	}
 
-
 	private class NamingCompleteReceiver extends BroadcastReceiver {
 
 		IntentFilter getFilter() {
@@ -734,8 +872,7 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 				return;
 			}
 			// store previous name before switching out class level var
-			String previousName = (device.name == null)
-					? getString(R.string._unnamed_core_)
+			String previousName = (device.name == null) ? getString(R.string._unnamed_core_)
 					: device.name;
 			device = newDevice;
 

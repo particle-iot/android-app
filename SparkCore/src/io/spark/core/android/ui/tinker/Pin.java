@@ -18,14 +18,12 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-
 public class Pin {
 
 	public interface OnAnalogWriteListener {
 
 		public void onAnalogWrite(int value);
 	}
-
 
 	private static final int ANALOG_WRITE_MAX = 255;
 	private static final int ANALOG_READ_MAX = 4095;
@@ -47,7 +45,6 @@ public class Pin {
 
 	boolean muted = false;
 
-
 	public Pin(TextView view, PinType pinType, String name) {
 		this.view = view;
 		this.pinType = pinType;
@@ -61,6 +58,9 @@ public class Pin {
 	}
 
 	public void reset() {
+		if (view == null)
+			return;
+
 		if (analogReadView != null) {
 			analogReadView.setVisibility(View.GONE);
 			// Reset the values
@@ -107,36 +107,40 @@ public class Pin {
 	}
 
 	private void updatePinColor() {
-		view.setTextColor(view.getContext().getResources().getColor(android.R.color.white));
+		if (view == null)
+			return;
+
+		view.setTextColor(view.getContext().getResources()
+				.getColor(android.R.color.white));
 
 		switch (configuredAction) {
-			case ANALOG_READ:
-				view.setBackgroundResource(R.drawable.tinker_pin_emerald);
-				break;
-			case ANALOG_WRITE:
-				view.setBackgroundResource(R.drawable.tinker_pin_sunflower);
-				break;
-			case DIGITAL_READ:
-				if (digitalValue == DigitalValue.HIGH) {
-					view.setBackgroundResource(R.drawable.tinker_pin_read_high);
-					view.setTextColor(view.getContext().getResources()
-							.getColor(R.color.tinker_pin_text_dark));
-				} else {
-					view.setBackgroundResource(R.drawable.tinker_pin_cyan);
-				}
-				break;
-			case DIGITAL_WRITE:
-				if (digitalValue == DigitalValue.HIGH) {
-					view.setBackgroundResource(R.drawable.tinker_pin_write_high);
-					view.setTextColor(view.getContext().getResources()
-							.getColor(R.color.tinker_pin_text_dark));
-				} else {
-					view.setBackgroundResource(R.drawable.tinker_pin_alizarin);
-				}
-				break;
-			case NONE:
-				view.setBackgroundResource(R.drawable.tinker_pin);
-				break;
+		case ANALOG_READ:
+			view.setBackgroundResource(R.drawable.tinker_pin_emerald);
+			break;
+		case ANALOG_WRITE:
+			view.setBackgroundResource(R.drawable.tinker_pin_sunflower);
+			break;
+		case DIGITAL_READ:
+			if (digitalValue == DigitalValue.HIGH) {
+				view.setBackgroundResource(R.drawable.tinker_pin_read_high);
+				view.setTextColor(view.getContext().getResources()
+						.getColor(R.color.tinker_pin_text_dark));
+			} else {
+				view.setBackgroundResource(R.drawable.tinker_pin_cyan);
+			}
+			break;
+		case DIGITAL_WRITE:
+			if (digitalValue == DigitalValue.HIGH) {
+				view.setBackgroundResource(R.drawable.tinker_pin_write_high);
+				view.setTextColor(view.getContext().getResources()
+						.getColor(R.color.tinker_pin_text_dark));
+			} else {
+				view.setBackgroundResource(R.drawable.tinker_pin_alizarin);
+			}
+			break;
+		case NONE:
+			view.setBackgroundResource(R.drawable.tinker_pin);
+			break;
 		}
 	}
 
@@ -149,10 +153,13 @@ public class Pin {
 	}
 
 	public void mute() {
+		if (view == null)
+			return;
+
 		muted = true;
 		view.setBackgroundResource(R.drawable.tinker_pin_muted);
-		view.setTextColor(view.getContext().getResources().getColor(
-				R.color.tinker_pin_text_muted));
+		view.setTextColor(view.getContext().getResources()
+				.getColor(R.color.tinker_pin_text_muted));
 		hideExtraViews();
 	}
 
@@ -163,6 +170,9 @@ public class Pin {
 	}
 
 	private void hideExtraViews() {
+		if (view == null)
+			return;
+
 		if (analogReadView != null) {
 			analogReadView.setVisibility(View.GONE);
 		}
@@ -201,6 +211,9 @@ public class Pin {
 	}
 
 	private void doShowAnalogValue(int newValue) {
+		if (view == null)
+			return;
+
 		if (analogWriteView != null) {
 			analogWriteView.setVisibility(View.GONE);
 			analogWriteView = null;
@@ -222,10 +235,12 @@ public class Pin {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 			if (pinType == PinType.A) {
-				analogReadView = inflater.inflate(R.layout.tinker_analog_read_left, parent, false);
+				analogReadView = inflater.inflate(
+						R.layout.tinker_analog_read_left, parent, false);
 				parent.addView(analogReadView);
 			} else if (pinType == PinType.D) {
-				analogReadView = inflater.inflate(R.layout.tinker_analog_read_right, parent, false);
+				analogReadView = inflater.inflate(
+						R.layout.tinker_analog_read_right, parent, false);
 				parent.addView(analogReadView, 0);
 			}
 		}
@@ -258,6 +273,9 @@ public class Pin {
 	}
 
 	public void showAnalogWrite(final OnAnalogWriteListener listener) {
+		if (view == null)
+			return;
+
 		if (analogReadView != null) {
 			analogReadView.setVisibility(View.GONE);
 			analogReadView = null;
@@ -265,7 +283,8 @@ public class Pin {
 
 		final ViewGroup parent = (ViewGroup) view.getParent();
 		if (analogWriteView == null) {
-			analogWriteView = Ui.findView(parent, R.id.tinker_analog_write_main);
+			analogWriteView = Ui
+					.findView(parent, R.id.tinker_analog_write_main);
 		}
 
 		// If the view does not exist, inflate it
@@ -274,12 +293,12 @@ public class Pin {
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 			if (pinType == PinType.A) {
-				analogWriteView = inflater.inflate(R.layout.tinker_analog_write_left,
-						parent, false);
+				analogWriteView = inflater.inflate(
+						R.layout.tinker_analog_write_left, parent, false);
 				parent.addView(analogWriteView);
 			} else if (pinType == PinType.D) {
-				analogWriteView = inflater.inflate(R.layout.tinker_analog_write_right, parent,
-						false);
+				analogWriteView = inflater.inflate(
+						R.layout.tinker_analog_write_right, parent, false);
 				parent.addView(analogWriteView, 0);
 			}
 		}
@@ -323,18 +342,22 @@ public class Pin {
 	}
 
 	public void showDigitalWrite(DigitalValue newValue) {
+		if (view == null)
+			return;
 		this.digitalValue = newValue;
 		ViewGroup parent = (ViewGroup) view.getParent();
 		if (digitalWriteView == null) {
-			digitalWriteView = Ui.findView(parent, R.id.tinker_digital_write_main);
+			digitalWriteView = Ui.findView(parent,
+					R.id.tinker_digital_write_main);
 		}
 
 		// If the view does not exist, inflate it
 		if (digitalWriteView == null) {
 			LayoutInflater inflater = (LayoutInflater) view.getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			digitalWriteView = inflater.inflate(R.layout.tinker_digital_write, parent, false);
-			if (pinType == PinType.A) {
+			digitalWriteView = inflater.inflate(R.layout.tinker_digital_write,
+					parent, false);
+			if (pinType == PinType.A || pinType == PinType.X) {
 				parent.addView(digitalWriteView);
 			} else if (pinType == PinType.D) {
 				parent.addView(digitalWriteView, 0);
@@ -349,6 +372,9 @@ public class Pin {
 	}
 
 	public void showDigitalRead(DigitalValue newValue) {
+		if (view == null)
+			return;
+
 		this.digitalValue = newValue;
 		ViewGroup parent = (ViewGroup) view.getParent();
 		if (digitalReadView == null) {
@@ -360,8 +386,9 @@ public class Pin {
 		if (digitalReadView == null) {
 			LayoutInflater inflater = (LayoutInflater) view.getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			digitalReadView = inflater.inflate(R.layout.tinker_digital_read, parent, false);
-			if (pinType == PinType.A) {
+			digitalReadView = inflater.inflate(R.layout.tinker_digital_read,
+					parent, false);
+			if (pinType == PinType.A || pinType == PinType.X) {
 				parent.addView(digitalReadView);
 			} else if (pinType == PinType.D) {
 				parent.addView(digitalReadView, 0);
@@ -383,7 +410,8 @@ public class Pin {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
+		result = prime
+				* result
 				+ ((configuredAction == null) ? 0 : configuredAction.hashCode());
 		result = prime * result + ((view == null) ? 0 : view.hashCode());
 		return result;
@@ -412,9 +440,10 @@ public class Pin {
 		return digitalValue;
 	}
 
-
-
 	public void animateYourself() {
+		if (view == null)
+			return;
+
 		final ViewGroup parent = (ViewGroup) view.getParent();
 
 		if (pinBackgroundAnim != null) {
@@ -452,23 +481,26 @@ public class Pin {
 	}
 
 	Animator getCancelAnimator() {
+
 		ObjectAnimator backToTransparent1 = (ObjectAnimator) AnimatorInflater
 				.loadAnimator(view.getContext(), R.animator.pin_background_end);
-		ObjectAnimator goDark = (ObjectAnimator) AnimatorInflater
-				.loadAnimator(view.getContext(), R.animator.pin_background_go_dark);
+		ObjectAnimator goDark = (ObjectAnimator) AnimatorInflater.loadAnimator(
+				view.getContext(), R.animator.pin_background_go_dark);
 		ObjectAnimator backToTransparent2 = (ObjectAnimator) AnimatorInflater
 				.loadAnimator(view.getContext(), R.animator.pin_background_end);
 
 		ViewGroup parent = (ViewGroup) view.getParent();
 		ArgbEvaluator evaluator = new ArgbEvaluator();
-		for (ObjectAnimator animator : list(backToTransparent1, goDark, backToTransparent2)) {
+		for (ObjectAnimator animator : list(backToTransparent1, goDark,
+				backToTransparent2)) {
 			animator.setTarget(parent);
 			animator.setEvaluator(evaluator);
 		}
 
 		AnimatorSet animatorSet = new AnimatorSet();
 		animatorSet.setTarget(parent);
-		animatorSet.playSequentially(backToTransparent1, goDark, backToTransparent2);
+		animatorSet.playSequentially(backToTransparent1, goDark,
+				backToTransparent2);
 		return animatorSet;
 	}
 
