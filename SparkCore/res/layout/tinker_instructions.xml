@@ -4,7 +4,7 @@
     android:id="@+id/tinker_instructions"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tinker_instructions_bg" >
+    android:background="@drawable/tinker_instructions_shadow" >
 
     <!-- This layout below isn't useless, it confines all the children to @dimen/phone_width -->
 
@@ -14,13 +14,20 @@
         android:layout_centerInParent="true"
         tools:ignore="UselessParent" >
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="-122dp"
-            android:src="@drawable/point_at_d7_temp" />
+        <!-- <ImageView -->
+        <!-- android:layout_width="40dp" -->
+        <!-- android:layout_height="wrap_content" -->
+        <!-- android:layout_alignParentRight="true" -->
+        <!-- android:layout_marginRight="5dp" -->
+        <!-- android:layout_marginTop="-122dp" -->
+        <!-- android:src="@drawable/point_at_d7_temp" /> -->
+
+
+        <!-- <ImageView -->
+        <!-- android:id="@+id/tinker_instructions_d7" -->
+        <!-- android:layout_width="32dp" -->
+        <!-- android:layout_height="32dp" -->
+        <!-- android:src="@drawable/tinker_pin_cyan" /> -->
 
         <LinearLayout
             android:layout_width="wrap_content"

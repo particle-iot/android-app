@@ -37,6 +37,7 @@ import android.content.IntentFilter;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.widget.SlidingPaneLayout;
@@ -292,27 +293,29 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 						View vChild = Ui.findView(v, R.id.tinker_logo_cogg_led);
 						ViewGroup.MarginLayoutParams lp = (MarginLayoutParams) vChild
 								.getLayoutParams();
-						View colorSelector = Ui.findView(
-								(Activity) v.getContext(),
+						View vCS = Ui.findView((Activity) v.getContext(),
 								R.id.tinker_color_selector);
+						View vShade = Ui.findView((Activity) v.getContext(),
+								R.id.tinker_shadow);
 
 						int m = bState ? 0 : 2;
-						int c = (Integer) colorSelector.getTag();
+						int c = (Integer) vCS.getTag();
 
 						if (bState) {
-							c |= 0x7F000000;
+							c |= 0xFF000000;
 							v.setBackgroundColor(c);
-							colorSelector.setTag(c);
+							vCS.setTag(c);
 						} else {
 							c &= 0x00FFFFFF;
 							v.setBackgroundColor(0xFF000000);
-							colorSelector.setTag(c);
-							colorSelector.setVisibility(View.GONE);
+							vCS.setTag(c);
+							vCS.setVisibility(View.GONE);
+							vShade.setVisibility(View.GONE);
 						}
 
 						((Vibrator) v.getContext().getSystemService(
 								Service.VIBRATOR_SERVICE)).vibrate(25);
-						api.analogWrite(device.id, "CL", 0, c);
+						api.analogWrite(device.id, "CL", 0, c & 0x01FFFFFF);
 
 						lp.setMargins(m, m, m, m);
 						vChild.setLayoutParams(lp);
@@ -330,36 +333,82 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 
 						View vCS = Ui.findView((Activity) v.getContext(),
 								R.id.tinker_color_selector);
+						View vShade = Ui.findView((Activity) v.getContext(),
+								R.id.tinker_shadow);
+						if (vCS.getVisibility() != View.VISIBLE) {
+							vCS.setVisibility(View.VISIBLE);
+							vShade.setX(vCS.getX() + 5);
+							vShade.setY(vCS.getY() + 5);
+							vShade.setVisibility(View.VISIBLE);
+						} else {
+							vCS.setVisibility(View.GONE);
+							vShade.setVisibility(View.GONE);
+						}
 
-						vCS.setVisibility(vCS.getVisibility() != View.VISIBLE ? View.VISIBLE
-								: View.GONE);
+						// View vCPV = Ui.findView((Activity) v.getContext(),
+						// R.id.tinker_camera_preview);
+						// vCPV.setVisibility(View.GONE);
 
 						return true;
 					}
 				});
 
+		/*
+		 * Ui.findView(this, R.id.tinker_color_selector).setOnLongClickListener(
+		 * new OnLongClickListener() {
+		 * 
+		 * @Override public boolean onLongClick(View v) {
+		 * log.i("long touch start"); View vCPV = Ui.findView((Activity)
+		 * v.getContext(), R.id.tinker_camera_preview);
+		 * 
+		 * if (vCPV.getVisibility() != View.VISIBLE) { log.i("long touch true");
+		 * ((Vibrator) v.getContext().getSystemService(
+		 * Service.VIBRATOR_SERVICE)).vibrate(25);
+		 * 
+		 * v.setVisibility(View.GONE);
+		 * 
+		 * ((SlidingPaneLayout) Ui.findView( (Activity) v.getContext(),
+		 * R.id.sliding_pane_layout)) .requestDisallowInterceptTouchEvent(true);
+		 * 
+		 * vCPV.setVisibility(View.VISIBLE);
+		 * 
+		 * return true; } log.i("long touch end");
+		 * 
+		 * return false; } });
+		 */
+
 		Ui.findView(this, R.id.tinker_color_selector).setOnTouchListener(
 				new OnTouchListener() {
+					float alpha0 = 0;
+					Matrix mx = new Matrix();
+					Bitmap bmp = null;
+					Rect r = new Rect();
+					int color = 0;
+					float rotation0;
 
 					@Override
 					public boolean onTouch(View v, MotionEvent event) {
-						int color = 0;
 
-						switch (event.getAction()) {
+						switch (event.getAction() & MotionEvent.ACTION_MASK) {
 						case MotionEvent.ACTION_DOWN:
-
+							// stop SlidingPane to slide during color selection
 							((SlidingPaneLayout) Ui.findView(
 									(Activity) v.getContext(),
 									R.id.sliding_pane_layout))
 									.requestDisallowInterceptTouchEvent(true);
 
-						case MotionEvent.ACTION_MOVE:
-							// convert event coordinates to resized image
-							// coordinates
+							// get initial state of views
+							v.getGlobalVisibleRect(r);
+							alpha0 = (float) Math.toDegrees(Math.atan2(
+									event.getRawX() - r.centerX(), r.centerY()
+											- event.getRawY()));
+							rotation0 = v.getRotation();
+
+							// convert event coordinates to resized/rotated
+							// image coordinates
 							float[] xy = new float[] { event.getX(),
 									event.getY() };
-							Matrix mx = new Matrix();
-							Bitmap bmp = ((BitmapDrawable) ((ImageView) v)
+							bmp = ((BitmapDrawable) ((ImageView) v)
 									.getDrawable()).getBitmap();
 							((ImageView) v).getImageMatrix().invert(mx);
 							mx.mapPoints(xy);
@@ -373,25 +422,110 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 								xy[1] = bmp.getHeight() - 1;
 
 							color = bmp.getPixel((int) xy[0], (int) xy[1]);
+
+							// accept only fully opaque colors
 							if ((color & 0xFF000000) == 0xFF000000) {
 								Ui.findView((Activity) v.getContext(),
 										R.id.tinker_rgb).setBackgroundColor(
 										color);
 								v.setTag(color);
+
+								View hsv = Ui.findView(
+										(Activity) v.getContext(),
+										R.id.tinker_hue_saturation_volume);
+								hsv.setVisibility(View.VISIBLE);
+								hsv.setRotation(alpha0);
+								((ImageView) Ui.findView(
+										(Activity) v.getContext(),
+										R.id.tinker_hue)).setColorFilter(color);
+							}
+
+						case MotionEvent.ACTION_MOVE:
+							// calculate angel between initial touch and now
+							float alpha = (float) Math.toDegrees(Math.atan2(
+									event.getRawX() - r.centerX(), r.centerY()
+											- event.getRawY()))
+									- alpha0;
+
+							// normalize result to -180/+180 degrees
+							if (alpha > 180)
+								alpha -= 360;
+							else if (alpha < -180)
+								alpha += 360;
+
+							// limit allowed rotation to -135/135 degrees
+							// to fit the saturation/volume ring image
+							if (Math.abs(alpha) <= 135) {
+								// rotate color ring and its shadow accordingly
+								v.setRotation(alpha + rotation0);
+								Ui.findView((Activity) v.getContext(),
+										R.id.tinker_shadow).setRotation(
+										alpha + rotation0);
+
+								// get selected color (hue)
+								int c = (Integer) v.getTag();
+								// split color into its RGB components
+								int r = (c >> 16) & 0xFF;
+								int g = (c >> 8) & 0xFF;
+								int b = (c >> 0) & 0xFF;
+
+								// do a rudimentary saturation/volume adjust
+								if (alpha > 0) {
+									r += (255 - r) * alpha / 135;
+									g += (255 - g) * alpha / 135;
+									b += (255 - b) * alpha / 135;
+								} else {
+									r *= (1 + alpha / 135);
+									g *= (1 + alpha / 135);
+									b *= (1 + alpha / 135);
+								}
+
+								// log.i("Move1: " + Integer.toHexString(c) +
+								// " "
+								// + Integer.toHexString(r) + " "
+								// + Integer.toHexString(g) + " "
+								// + Integer.toHexString(b));
+
+								// put fully opaque color together again
+								color = (c & 0xFF000000) | r << 16 | g << 8 | b;
+
+								// log.i("Move2: " + Integer.toHexString(c) +
+								// " "
+								// + Integer.toHexString(r) + " "
+								// + Integer.toHexString(g) + " "
+								// + Integer.toHexString(b));
+
+								// show result in RGB-LED view
+								if ((color & 0xFF000000) == 0xFF000000) {
+									Ui.findView((Activity) v.getContext(),
+											R.id.tinker_rgb)
+											.setBackgroundColor(color);
+								}
 							}
 							return true;
 						case MotionEvent.ACTION_UP:
+							// give haptic feedback when finished
 							((Vibrator) v.getContext().getSystemService(
 									Service.VIBRATOR_SERVICE)).vibrate(25);
-							api.analogWrite(device.id, "CL",
-									color & 0x7FFFFFFF, (Integer) v.getTag());
 
+							// send selected color to Core
+							// (alpha 0x01 causes RGB.control(true) on Core)
+							api.analogWrite(device.id, "CL",
+									(Integer) v.getTag() & 0x01FFFFFF,
+									color & 0x01FFFFFF);
+
+							// allow touch sliding again
 							((SlidingPaneLayout) Ui.findView(
 									(Activity) v.getContext(),
 									R.id.sliding_pane_layout))
 									.requestDisallowInterceptTouchEvent(false);
 						case MotionEvent.ACTION_OUTSIDE:
 						case MotionEvent.ACTION_CANCEL:
+							// hide saturation/volume view
+							Ui.findView((Activity) v.getContext(),
+									R.id.tinker_hue_saturation_volume)
+									.setVisibility(View.GONE);
+
 							return true;
 						}
 
@@ -405,10 +539,12 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 	private void showInstructions() {
 		View instructions = Ui.findView(this, R.id.tinker_instructions);
 
-		// set cyan on "D7" text
 		TextView instructions3 = Ui.findView(instructions,
 				R.id.tinker_instructions_3);
 		String d7 = "D7";
+
+		pinsByName.get(d7).setConfiguredAction(PinAction.DIGITAL_WRITE);
+
 		String instructions3Text = getString(R.string.tinker_instructions_3);
 		int idx = instructions3Text.indexOf(d7);
 		int cyan = getResources().getColor(R.color.cyan);
@@ -424,6 +560,8 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 			@Override
 			public void onClick(View v) {
 				v.setVisibility(View.GONE);
+				pinsByName.get("D7").setConfiguredAction(
+						prefs.getPinFunction(device.id, "D7"));
 				TinkerPrefs.getInstance().setVisited(true);
 			}
 		});
@@ -495,8 +633,14 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 				R.id.tinker_button_digital_read);
 		final View digitalWrite = Ui.findView(selectDialogView,
 				R.id.tinker_button_digital_write);
+
+		final View hidePin = Ui.findView(selectDialogView,
+				R.id.tinker_button_hide);
+		final View resetPin = Ui.findView(selectDialogView,
+				R.id.tinker_button_reset);
+
 		final List<View> allButtons = list(analogRead, analogWrite,
-				digitalRead, digitalWrite);
+				digitalRead, digitalWrite, hidePin, resetPin);
 
 		analogRead.setOnTouchListener(new OnTouchListener() {
 
@@ -538,27 +682,58 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 			}
 		});
 
+		hidePin.setOnTouchListener(new OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					setTinkerSelectButtonSelected(hidePin, allButtons);
+				}
+				return false;
+			}
+		});
+
+		resetPin.setOnTouchListener(new OnTouchListener() {
+
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					setTinkerSelectButtonSelected(resetPin, allButtons);
+				}
+				return false;
+			}
+		});
+
 		digitalWrite.setOnClickListener(this);
 		digitalRead.setOnClickListener(this);
 		analogRead.setOnClickListener(this);
 		analogWrite.setOnClickListener(this);
+		hidePin.setOnClickListener(this);
+		resetPin.setOnClickListener(this);
 
-		if (!digitalWritePins.contains(pin)) {
+		if (pin.getConfiguredAction() == PinAction.HIDDEN) {
+			hidePin.setVisibility(View.INVISIBLE);
+		} else {
+			hidePin.setVisibility(View.VISIBLE);
+		}
+		if (!digitalWritePins.contains(pin)
+				|| pin.getConfiguredAction() == PinAction.HIDDEN) {
 			digitalWrite.setVisibility(View.INVISIBLE);
 		} else {
 			digitalWrite.setVisibility(View.VISIBLE);
 		}
-		if (!digitalReadPins.contains(pin)) {
+		if (!digitalReadPins.contains(pin)
+				|| pin.getConfiguredAction() == PinAction.HIDDEN) {
 			digitalRead.setVisibility(View.INVISIBLE);
 		} else {
 			digitalRead.setVisibility(View.VISIBLE);
 		}
-		if (!analogReadPins.contains(pin)) {
+		if (!analogReadPins.contains(pin)
+				|| pin.getConfiguredAction() == PinAction.HIDDEN) {
 			analogRead.setVisibility(View.INVISIBLE);
 		} else {
 			analogRead.setVisibility(View.VISIBLE);
 		}
-		if (!analogWritePins.contains(pin)) {
+		if (!analogWritePins.contains(pin)
+				|| pin.getConfiguredAction() == PinAction.HIDDEN) {
 			analogWrite.setVisibility(View.INVISIBLE);
 		} else {
 			analogWrite.setVisibility(View.VISIBLE);
@@ -587,6 +762,9 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 
 		case NONE:
 			setTinkerSelectButtonSelected(null, allButtons);
+			break;
+
+		case HIDDEN:
 			break;
 		}
 
@@ -668,6 +846,12 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 			break;
 		case R.id.tinker_button_digital_write:
 			onFunctionSelected(selectedPin, PinAction.DIGITAL_WRITE);
+			break;
+		case R.id.tinker_button_hide:
+			onFunctionSelected(selectedPin, PinAction.HIDDEN);
+			break;
+		case R.id.tinker_button_reset:
+			onFunctionSelected(selectedPin, PinAction.NONE);
 			break;
 		case R.id.tinker_main:
 			for (Pin pin : allPins) {

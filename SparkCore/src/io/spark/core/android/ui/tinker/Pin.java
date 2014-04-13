@@ -126,7 +126,7 @@ public class Pin {
 				view.setTextColor(view.getContext().getResources()
 						.getColor(R.color.tinker_pin_text_dark));
 			} else {
-				view.setBackgroundResource(R.drawable.tinker_pin_cyan);
+				view.setBackgroundResource(R.drawable.tinker_pin_alizarin);
 			}
 			break;
 		case DIGITAL_WRITE:
@@ -135,12 +135,19 @@ public class Pin {
 				view.setTextColor(view.getContext().getResources()
 						.getColor(R.color.tinker_pin_text_dark));
 			} else {
-				view.setBackgroundResource(R.drawable.tinker_pin_alizarin);
+				view.setBackgroundResource(R.drawable.tinker_pin_cyan);
 			}
 			break;
-		case NONE:
+		case HIDDEN:
+			reset();
+			view.setAlpha(0.05f);
 			view.setBackgroundResource(R.drawable.tinker_pin);
 			break;
+		case NONE:
+			view.setAlpha(1.00f);
+			view.setBackgroundResource(R.drawable.tinker_pin);
+			break;
+			
 		}
 	}
 

@@ -72,15 +72,15 @@
     </style>
 
     <style name="SparkTinkerPinsTableLayout">
-        <item name="android:layout_width">@dimen/content_width</item>
+        <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_marginBottom">0dp</item>
         <item name="android:layout_marginTop">0dp</item>
         <item name="android:layout_marginLeft">8dp</item>
         <item name="android:layout_marginRight">8dp</item>
-        <item name="android:paddingBottom">0dp</item>
-        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">1dp</item>
+        <item name="android:paddingTop">1dp</item>
         <item name="android:shrinkColumns">*</item>
         <item name="android:stretchColumns">*</item>
     </style>
@@ -116,8 +116,8 @@
     </style>
 
     <style name="SparkTinkerPinBG">
-        <item name="android:padding">5dp</item>
-        <item name="android:layout_marginBottom">1dp</item>
+        <item name="android:padding">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
         <item name="android:clickable">true</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:gravity">center_vertical</item>
@@ -158,7 +158,7 @@
     <style name="TinkerSelectButton">
         <item name="font">@string/font_light</item>
         <item name="android:layout_width">1dip</item>
-        <item name="android:layout_height">40dip</item>
+        <item name="android:layout_height">30dip</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_weight">1</item>
     </style>

@@ -6,5 +6,6 @@ public enum PinAction {
 	ANALOG_WRITE,
 	DIGITAL_READ,
 	DIGITAL_WRITE,
-	NONE;
+	NONE,
+	HIDDEN;
 }

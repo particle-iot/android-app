@@ -3,6 +3,7 @@
 	<name>SparkCore</name>
 	<comment></comment>
 	<projects>
+		<project>Fontify</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
