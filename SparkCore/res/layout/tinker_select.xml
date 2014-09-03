@@ -18,40 +18,40 @@
             style="@style/TinkerSelectButtonBg"
             android:layout_marginRight="1dp" >
 
+            <View
+                android:id="@id/tinker_button_color"
+                style="@style/TinkerSelectColorBox"
+                android:background="#3fffffff" />
+
             <com.danh32.fontify.TextView
                 style="@style/TinkerSelectButton"
                 android:layout_gravity="left"
                 android:text="hide" />
-
-            <View
-                android:id="@id/tinker_button_color"
-                style="@style/TinkerSelectColorBox"
-                android:background="#00000000" />
         </LinearLayout>
 
         <com.danh32.fontify.TextView
             android:id="@+id/tinker_select_pin"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="D0"
-            android:textSize="30sp"
+            android:textSize="24sp"
             fontify:font="@string/font_thin" />
 
         <LinearLayout
             android:id="@+id/tinker_button_reset"
             style="@style/TinkerSelectButtonBg" >
 
-            <View
-                android:id="@id/tinker_button_color"
-                style="@style/TinkerSelectColorBox"
-                android:background="#ff000000" />
-
             <com.danh32.fontify.TextView
                 style="@style/TinkerSelectButton"
                 android:layout_gravity="right"
                 android:text="reset" />
+
+            <View
+                android:id="@id/tinker_button_color"
+                style="@style/TinkerSelectColorBox"
+                android:background="#ff000000" />
         </LinearLayout>
     </LinearLayout>
 

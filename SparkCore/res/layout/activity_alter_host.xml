@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/sign_up_background"
+    android:background="@drawable/alter_host_background"
     android:orientation="vertical"
-    tools:context=".SignUpActivity" >
+    tools:context=".AlterHostActivity" >
 
     <ScrollView
         android:id="@+id/scroll_area"
@@ -31,26 +31,23 @@
                 tools:ignore="ContentDescription" />
 
             <com.danh32.fontify.EditText
-                android:id="@+id/email"
+                android:id="@+id/host_server"
                 style="@style/SparkEditText.Padded"
                 android:layout_width="match_parent"
                 android:layout_marginTop="16dp"
-                android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress" >
+                android:hint="@string/prod_hostname"
+                android:inputType="textUri" >
 
                 <requestFocus />
             </com.danh32.fontify.EditText>
 
             <com.danh32.fontify.EditText
-                android:id="@+id/password"
+                android:id="@+id/host_port"
                 style="@style/SparkEditText.Padded"
                 android:layout_width="match_parent"
                 android:layout_marginTop="8dp"
-                android:hint="@string/prompt_password"
-                android:imeActionId="@+id/login"
-                android:imeActionLabel="@string/action_sign_up"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword" />
+                android:hint="@integer/api_host_port"
+                android:inputType="number" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -58,18 +55,27 @@
                 android:layout_marginTop="8dp" >
 
                 <com.danh32.fontify.Button
-                    android:id="@+id/sign_up_button"
+                    android:id="@+id/alter_host_button"
                     style="@style/SparkButton"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/sign_up_button_selector"
-                    android:text="@string/action_sign_up" />
+                    android:background="@drawable/alter_host_button_selector"
+                    android:text="@string/action_alter_host" />
 
                 <ProgressBar
                     android:id="@+id/progress_indicator"
                     style="@style/SparkSpinner"
-                    android:layout_alignLeft="@id/sign_up_button"
+                    android:layout_alignLeft="@id/alter_host_button"
                     android:visibility="invisible" />
             </RelativeLayout>
+
+<!-- 
+            <com.danh32.fontify.TextView
+                android:id="@+id/no_account_yet"
+                style="@style/LinkText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="@string/i_dont_have_an_account" />
 
             <com.danh32.fontify.TextView
                 android:id="@+id/already_have_account"
@@ -78,27 +84,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:text="@string/i_already_have_an_account" />
-
-            <com.danh32.fontify.TextView
-                android:id="@+id/alter_host"
-                style="@style/LinkText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
-                android:text="@string/alter_host_link" />
+ -->
         </LinearLayout>
     </ScrollView>
-
-    <com.danh32.fontify.TextView
-        android:id="@id/fine_print"
-        style="@style/FinePrint"
-        android:layout_width="@dimen/account_widget_width"
-        android:layout_height="0dp"
-        android:layout_gravity="fill_vertical|center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_weight="1"
-        android:gravity="center_horizontal|bottom"
-        android:text="@string/sign_up_fine_print" />
 
 </FrameLayout>

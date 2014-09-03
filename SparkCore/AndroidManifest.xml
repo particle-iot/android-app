@@ -34,7 +34,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>    
+        <activity
+            android:name="io.spark.core.android.ui.AlterHostActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name="io.spark.core.android.ui.LoginActivity"
             android:screenOrientation="portrait"

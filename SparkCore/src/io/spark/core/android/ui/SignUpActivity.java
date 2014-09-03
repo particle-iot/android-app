@@ -30,10 +30,10 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -41,14 +41,11 @@ import android.widget.Toast;
  */
 public class SignUpActivity extends BaseActivity {
 
-
 	private static final TLog log = new TLog(SignUpActivity.class);
-
 
 	// Indicate that we came from the login screen, so don't attempt
 	// "launchNextActivityIfReady()"
-	public static final String EXTRA_FROM_LOGIN = "io.spark.core.android.extra.FROM_LOGIN";
-
+	public static final String EXTRA_FROM_LOGIN = "io.spark.core.android.extra.FROM_LOGIN";;
 
 	// Values for email and password at the time of the login attempt.
 	private String mEmail;
@@ -60,11 +57,11 @@ public class SignUpActivity extends BaseActivity {
 	private EditText mEmailView;
 	private EditText mPasswordView;
 	private Button accountAction;
+	private ImageView alterHost;
 
 	private LoggedInReceiver loggedInReceiver = new LoggedInReceiver();
 	private SignUpReceiver signUpReceiver = new SignUpReceiver();
 	private DevicesLoadedReceiver devicesLoadedReceiver = new DevicesLoadedReceiver();
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -86,21 +83,25 @@ public class SignUpActivity extends BaseActivity {
 		mEmailView = Ui.findView(this, R.id.email);
 		mPasswordView = Ui.findView(this, R.id.password);
 
-		Ui.setTextFromHtml(this, R.id.already_have_account, R.string.i_already_have_an_account);
-		TextView finePrint = Ui.setTextFromHtml(this, R.id.fine_print, R.string.sign_up_fine_print);
+		Ui.setTextFromHtml(this, R.id.already_have_account,
+				R.string.i_already_have_an_account);
+		TextView finePrint = Ui.setTextFromHtml(this, R.id.fine_print,
+				R.string.sign_up_fine_print);
 		finePrint.setMovementMethod(LinkMovementMethod.getInstance());
 
-		mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mPasswordView
+				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-			@Override
-			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					attemptLogin();
-					return true;
-				}
-				return false;
-			}
-		});
+					@Override
+					public boolean onEditorAction(TextView textView, int id,
+							KeyEvent keyEvent) {
+						if (id == R.id.login || id == EditorInfo.IME_NULL) {
+							attemptLogin();
+							return true;
+						}
+						return false;
+					}
+				});
 
 		accountAction = Ui.findView(this, R.id.sign_up_button);
 		accountAction.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +112,15 @@ public class SignUpActivity extends BaseActivity {
 			}
 		});
 
+		alterHost = Ui.findView(this, R.id.spark_logo);
+		alterHost.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				startActivity(new Intent(SignUpActivity.this,
+						AlterHostActivity.class));
+			}
+		});
 
 		// set up touch listeners on form fields, to auto scroll when the
 		// keyboard pops up
@@ -127,21 +137,38 @@ public class SignUpActivity extends BaseActivity {
 			});
 		}
 
-		findViewById(R.id.already_have_account).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.already_have_account).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						startActivity(new Intent(SignUpActivity.this,
+								LoginActivity.class));
+						finish();
+					}
+				});
+
+		TextView alterHost = Ui.setTextFromHtml(this, R.id.alter_host,
+				R.string.alter_host_link);
+		alterHost.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
-				finish();
+				int dmy = 0;
+				startActivityForResult(new Intent(SignUpActivity.this,
+						AlterHostActivity.class), dmy);
 			}
 		});
+
 	}
 
 	@Override
 	protected void onStart() {
 		super.onStart();
-		broadcastMgr.registerReceiver(signUpReceiver, signUpReceiver.getFilter());
-		broadcastMgr.registerReceiver(loggedInReceiver, loggedInReceiver.getFilter());
+		broadcastMgr.registerReceiver(signUpReceiver,
+				signUpReceiver.getFilter());
+		broadcastMgr.registerReceiver(loggedInReceiver,
+				loggedInReceiver.getFilter());
 	}
 
 	@Override
@@ -159,7 +186,8 @@ public class SignUpActivity extends BaseActivity {
 
 			@Override
 			public void run() {
-				ScrollView scrollArea = Ui.findView(SignUpActivity.this, R.id.scroll_area);
+				ScrollView scrollArea = Ui.findView(SignUpActivity.this,
+						R.id.scroll_area);
 				// using fullScroll() or pageScroll() impacts which child widget
 				// gets focus, so that doesn't work here, instead just scroll by
 				// an absurdly large number.
@@ -238,8 +266,8 @@ public class SignUpActivity extends BaseActivity {
 		Intent intent = null;
 		if (isLoggedIn()) {
 			log.d("Looks like we're logged in, launching Cores list");
-			intent = new Intent(this, CoreListActivity.class)
-					.putExtra(CoreListActivity.ARG_ENTERING_FROM_LAUNCH, true);
+			intent = new Intent(this, CoreListActivity.class).putExtra(
+					CoreListActivity.ARG_ENTERING_FROM_LAUNCH, true);
 			if (DeviceState.getKnownDevices().isEmpty()) {
 				api.requestAllDevices();
 			}
@@ -272,7 +300,6 @@ public class SignUpActivity extends BaseActivity {
 		accountAction.setEnabled(!show);
 	}
 
-
 	private void onSignUpComplete(boolean success, String error) {
 		// Regardless of whether it's a success, wait for the service to try
 		// logging in before reporting failure.
@@ -292,9 +319,11 @@ public class SignUpActivity extends BaseActivity {
 		}
 
 		if (waitForDevicesOnLogin) {
-			broadcastMgr.registerReceiver(devicesLoadedReceiver, devicesLoadedReceiver.getFilter());
+			broadcastMgr.registerReceiver(devicesLoadedReceiver,
+					devicesLoadedReceiver.getFilter());
 			api.requestAllDevices();
-			Toast toast = Toast.makeText(this, "Loading your Cores...", Toast.LENGTH_LONG);
+			Toast toast = Toast.makeText(this, "Loading your Cores...",
+					Toast.LENGTH_LONG);
 			toast.setGravity(Gravity.CENTER, 0, 0);
 			toast.show();
 
@@ -306,8 +335,8 @@ public class SignUpActivity extends BaseActivity {
 
 	private void moveToCoreList() {
 		if (!isFinishing()) {
-			Intent intent = new Intent(this, CoreListActivity.class)
-					.putExtra(CoreListActivity.ARG_ENTERING_FROM_LAUNCH, true);
+			Intent intent = new Intent(this, CoreListActivity.class).putExtra(
+					CoreListActivity.ARG_ENTERING_FROM_LAUNCH, true);
 			if (DeviceState.getKnownDevices().isEmpty()) {
 				intent.putExtra(CoreListActivity.ARG_SKIP_TO_SMART_CONFIG, true);
 			}
@@ -329,7 +358,6 @@ public class SignUpActivity extends BaseActivity {
 		}
 	}
 
-
 	class SignUpReceiver extends BroadcastReceiver {
 
 		public IntentFilter getFilter() {
@@ -338,11 +366,11 @@ public class SignUpActivity extends BaseActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			onSignUpComplete((ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
+			onSignUpComplete(
+					(ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
 					intent.getStringExtra(SimpleSparkApiService.EXTRA_ERROR_MSG));
 		}
 	}
-
 
 	class LoggedInReceiver extends BroadcastReceiver {
 
@@ -352,11 +380,11 @@ public class SignUpActivity extends BaseActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			onLogInComplete((ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
+			onLogInComplete(
+					(ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
 					intent.getStringExtra(SimpleSparkApiService.EXTRA_ERROR_MSG));
 		}
 	}
-
 
 	class DevicesLoadedReceiver extends BroadcastReceiver {
 
@@ -366,10 +394,10 @@ public class SignUpActivity extends BaseActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			onDevicesUpdated((ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
+			onDevicesUpdated(
+					(ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
 					intent.getStringExtra(SimpleSparkApiService.EXTRA_ERROR_MSG));
 		}
 	}
-
 
 }
