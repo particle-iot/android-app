@@ -17,7 +17,7 @@
             style="@style/FormContainer"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/logo_top_margin"
+            android:paddingTop="@dimen/logo_top_margin"
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 

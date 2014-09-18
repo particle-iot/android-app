@@ -22,4 +22,9 @@
 
     <string name="smart_config_default_aes_key">sparkdevices2013</string>
 
+    <string-array name="api_url_schemes">
+        <item>https</item>
+        <item>http</item>
+    </string-array>
+
 </resources>
