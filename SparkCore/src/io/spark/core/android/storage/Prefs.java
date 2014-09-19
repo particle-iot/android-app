@@ -18,6 +18,7 @@ public class Prefs {
 	private static final String KEY_HOST_NAME = "hostname";
 	private static final String KEY_HOST_PORT = "hostport";
 	private static final String KEY_USERNAME = "username";
+	private static final String KEY_EXTTINKER = "exttinker";
 	private static final String KEY_TOKEN = "token";
 	private static final String KEY_COMPLETED_FIRST_LOGIN = "completedFirstLogin";
 	private static final String KEY_CORES_JSON_ARRAY = "coresJsonArray";
@@ -154,6 +155,17 @@ public class Prefs {
 		applyString(key, function.name());
 	}
 
+	public boolean getTinkerExtensions(String coreId) {
+		if (prefs.contains(KEY_EXTTINKER + coreId))
+			return prefs.getBoolean(KEY_EXTTINKER + coreId, false);
+		else 
+			return false;
+	}
+
+	public void saveTinkerExtensions(boolean exttinker, String coreId) {
+		prefs.edit().putBoolean(KEY_EXTTINKER + coreId, exttinker).commit();
+	}
+	
 	public void clearTinker(String coreId) {
 		List<String> pinNames = list("A0", "A1", "A2", "A3", "A4", "A5", "A6",
 				"A7", "D0", "D1", "D2", "D3", "D4", "D5", "D6", "D7", "TX",

@@ -37,7 +37,8 @@
             android:layout_alignParentTop="true"
             android:layout_weight="0.2"
             android:shrinkColumns="0,2"
-            android:stretchColumns="0,2" >
+            android:stretchColumns="0,2"
+            android:visibility="gone" >
 
             <TableRow android:layout_weight="0.5" >
 
@@ -272,48 +273,53 @@
         </TableLayout>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/tinker_shadow"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:src="@drawable/tinker_logo_shadow_wheel"
-        android:visibility="gone" />
-
     <RelativeLayout
-        android:id="@+id/tinker_hue_saturation_volume"
-        android:layout_width="220dp"
-        android:layout_height="220dp"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/tinker_color_manipulation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:visibility="gone" >
 
         <ImageView
-            android:id="@+id/tinker_hue"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:src="@drawable/tinker_hue" />
+            android:id="@+id/tinker_shadow"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/tinker_logo_shadow_wheel"
+            />
+
+        <RelativeLayout
+            android:id="@+id/tinker_hue_saturation_volume"
+            android:layout_width="220dp"
+            android:layout_height="220dp"
+            android:layout_centerInParent="true"
+            android:visibility="gone" >
+
+            <ImageView
+                android:id="@+id/tinker_hue"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:src="@drawable/tinker_hue" />
+
+            <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:src="@drawable/tinker_saturation_volume" />
+        </RelativeLayout>
 
         <ImageView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:src="@drawable/tinker_saturation_volume" />
+            android:id="@+id/tinker_color_selector"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:hapticFeedbackEnabled="true"
+            android:src="@drawable/tinker_logo_color_wheel"
+            />
     </RelativeLayout>
-
-    <ImageView
-        android:id="@+id/tinker_color_selector"
-        android:layout_width="220dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:hapticFeedbackEnabled="true"
-        android:src="@drawable/tinker_logo_color_wheel"
-        android:visibility="gone" />
-
+    
     <!-- <io.spark.core.android.ui.tinker.CameraView -->
     <!-- android:id="@+id/tinker_camera_preview" -->
     <!-- android:layout_width="220dp" -->

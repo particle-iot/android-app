@@ -18,9 +18,9 @@
             style="@style/FormContainer"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:paddingTop="@dimen/logo_top_margin"
             android:gravity="center_horizontal"
-            android:orientation="vertical" >
+            android:orientation="vertical"
+            android:paddingTop="@dimen/logo_top_margin" >
 
             <ImageView
                 android:id="@+id/spark_logo"
@@ -95,6 +95,16 @@
                     android:layout_alignLeft="@id/alter_host_button"
                     android:visibility="invisible" />
             </RelativeLayout>
+
+            <com.danh32.fontify.TextView
+                style="@style/FinePrint"
+                android:layout_width="@dimen/account_widget_width"
+                android:layout_height="0dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginTop="24dp"
+                android:layout_weight="1"
+                android:gravity="center_horizontal|bottom"
+                android:text="@string/alter_host_hint" />
         </LinearLayout>
     </ScrollView>
 

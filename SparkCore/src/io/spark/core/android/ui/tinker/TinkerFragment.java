@@ -38,11 +38,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.v4.widget.SlidingPaneLayout;
 import android.text.Spannable;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -94,7 +96,7 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		arguments.putString(TinkerFragment.ARG_DEVICE_ID, deviceId);
 		TinkerFragment fragment = new TinkerFragment();
 		fragment.setArguments(arguments);
-		return fragment;
+	return fragment;
 	}
 
 	/**
@@ -107,11 +109,11 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 		if (getArguments().containsKey(ARG_DEVICE_ID)) {
 			device = DeviceState.getDeviceById(getArguments().getString(
 					ARG_DEVICE_ID));
 		}
+		setHasOptionsMenu(true); // needs device to be set, so it got moved here
 		tinkerReceiver = new TinkerReceiver();
 		namingCompleteReceiver = new NamingCompleteReceiver();
 		namingFailedReceiver = new NamingFailedReceiver();
@@ -121,7 +123,6 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
 		loadViews();
 		setupListeners();
 
@@ -157,6 +158,12 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 		super.onCreateOptionsMenu(menu, inflater);
 		inflater.inflate(R.menu.tinker, menu);
 		inflater.inflate(R.menu.core_row_overflow, menu);
+
+		// first preset opposit state, and then toggle into desired state
+		// not pretty, but safes me to wrap this in a standalone function
+		menu.findItem(R.id.action_enable_extensions).setChecked(
+				!prefs.getTinkerExtensions(device.id));
+		menu.performIdentifierAction(R.id.action_enable_extensions, 0);
 	}
 
 	@Override
@@ -176,6 +183,19 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 				pin.setConfiguredAction(PinAction.NONE);
 				pin.reset();
 			}
+			return true;
+
+		case R.id.action_enable_extensions:
+			View v;
+			item.setChecked(!item.isChecked());
+			item.setIcon(item.isChecked() ? R.drawable.ic_action_ext
+					: R.drawable.ic_action_noext);
+			if ((v = Ui.findView(this, R.id.tinker_pins_ext)) != null)
+				v.setVisibility(item.isChecked() ? View.VISIBLE : View.GONE);
+			if (!item.isChecked()
+					&& (v = Ui.findView(this, R.id.tinker_color_manipulation)) != null)
+				v.setVisibility(View.GONE);
+			prefs.saveTinkerExtensions(item.isChecked(), device.id);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -295,9 +315,10 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 								.getLayoutParams();
 						View vCS = Ui.findView((Activity) v.getContext(),
 								R.id.tinker_color_selector);
-						View vShade = Ui.findView((Activity) v.getContext(),
-								R.id.tinker_shadow);
-
+						/*
+						 * View vShade = Ui.findView((Activity) v.getContext(),
+						 * R.id.tinker_shadow);
+						 */
 						int m = bState ? 0 : 2;
 						int c = (Integer) vCS.getTag();
 
@@ -309,8 +330,11 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 							c &= 0x00FFFFFF;
 							v.setBackgroundColor(0xFF000000);
 							vCS.setTag(c);
-							vCS.setVisibility(View.GONE);
-							vShade.setVisibility(View.GONE);
+							// vCS.setVisibility(View.GONE);
+							// vShade.setVisibility(View.GONE);
+							Ui.findView((Activity) v.getContext(),
+									R.id.tinker_color_manipulation)
+									.setVisibility(View.GONE);
 						}
 
 						((Vibrator) v.getContext().getSystemService(
@@ -331,18 +355,22 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 						if (!(Boolean) v.getTag())
 							v.callOnClick(); // make sure LED control is active
 
+						View vCM = Ui.findView((Activity) v.getContext(),
+								R.id.tinker_color_manipulation);
 						View vCS = Ui.findView((Activity) v.getContext(),
 								R.id.tinker_color_selector);
 						View vShade = Ui.findView((Activity) v.getContext(),
 								R.id.tinker_shadow);
-						if (vCS.getVisibility() != View.VISIBLE) {
-							vCS.setVisibility(View.VISIBLE);
+
+						if (vCM.getVisibility() != View.VISIBLE) {
+							vCM.setVisibility(View.VISIBLE);
 							vShade.setX(vCS.getX() + 5);
 							vShade.setY(vCS.getY() + 5);
-							vShade.setVisibility(View.VISIBLE);
+							// vShade.setVisibility(View.VISIBLE);
 						} else {
-							vCS.setVisibility(View.GONE);
-							vShade.setVisibility(View.GONE);
+							// vCS.setVisibility(View.GONE);
+							// vShade.setVisibility(View.GONE);
+							vCM.setVisibility(View.GONE);
 						}
 
 						// View vCPV = Ui.findView((Activity) v.getContext(),
@@ -513,7 +541,8 @@ public class TinkerFragment extends BaseFragment implements OnClickListener {
 							api.analogWrite(device.id, "CL",
 									(Integer) v.getTag() & 0x01FFFFFF,
 									color & 0x01FFFFFF);
-
+							v.setTag(color);
+							
 							// allow touch sliding again
 							((SlidingPaneLayout) Ui.findView(
 									(Activity) v.getContext(),
