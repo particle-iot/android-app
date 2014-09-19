@@ -6,6 +6,7 @@
     <style name="Theme.NoActionBar" parent="@android:style/Theme.Holo.NoActionBar">
         <item name="android:gravity">center</item>
         <item name="android:layout_gravity">center</item>
+        <item name="android:spinnerItemStyle">@style/SpinnerItem</item>
     </style>
 
     <style name="Theme.CustomTypefaceGradientActionBar" parent="@style/AppTheme">
@@ -29,9 +30,17 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowFrame">@null</item>
         <item name="android:windowContentOverlay">@null</item>
-        <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="SpinnerItem" parent="@android:style/Widget.TextView.SpinnerItem">
+        <item name="font">@string/font_light</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:textColorHint">#7F000000</item>
+        <item name="android:textColor">#FF000000</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:background">#E5FFFFFF</item>
     </style>
 
     <!--
@@ -39,5 +48,4 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     -->
 
-    
 </resources>

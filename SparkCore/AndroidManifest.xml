@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.spark.core.android"
     android:versionCode="4"
-    android:versionName="0.1.2" >
+    android:versionName="0.1.2.rgb" >
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -13,6 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+<!--     <uses-permission android:name="android.permission.CAMERA"/> -->
 
     <application
         android:name="io.spark.core.android.app.SparkCoreApp"
@@ -32,7 +34,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>    
+        <activity
+            android:name="io.spark.core.android.ui.AlterHostActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name="io.spark.core.android.ui.LoginActivity"
             android:screenOrientation="portrait"

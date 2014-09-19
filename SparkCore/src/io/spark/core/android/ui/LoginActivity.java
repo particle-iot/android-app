@@ -29,10 +29,10 @@ import android.view.View.OnTouchListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 public class LoginActivity extends BaseActivity {
 
@@ -40,6 +40,7 @@ public class LoginActivity extends BaseActivity {
 	private EditText mEmailView;
 	private EditText mPasswordView;
 	private Button accountAction;
+	private ImageView alterHost;
 
 	private String email;
 	private String password;
@@ -62,17 +63,19 @@ public class LoginActivity extends BaseActivity {
 
 		netConnectionHelper = new NetConnectionHelper(this);
 
-		mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+		mPasswordView
+				.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
-			@Override
-			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-				if (id == R.id.login || id == EditorInfo.IME_NULL) {
-					attemptLogin();
-					return true;
-				}
-				return false;
-			}
-		});
+					@Override
+					public boolean onEditorAction(TextView textView, int id,
+							KeyEvent keyEvent) {
+						if (id == R.id.login || id == EditorInfo.IME_NULL) {
+							attemptLogin();
+							return true;
+						}
+						return false;
+					}
+				});
 
 		accountAction = Ui.findView(this, R.id.sign_up_button);
 		accountAction.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +86,15 @@ public class LoginActivity extends BaseActivity {
 			}
 		});
 
+		alterHost = Ui.findView(this, R.id.spark_logo);
+		alterHost.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				startActivity(new Intent(LoginActivity.this,
+						AlterHostActivity.class));
+			}
+		});
 
 		// set up touch listeners on form fields, to auto scroll when the
 		// keyboard pops up
@@ -99,7 +111,6 @@ public class LoginActivity extends BaseActivity {
 			});
 		}
 
-
 		TextView noAccountYet = Ui.setTextFromHtml(this, R.id.no_account_yet,
 				R.string.i_dont_have_an_account);
 		noAccountYet.setOnClickListener(new OnClickListener() {
@@ -109,8 +120,9 @@ public class LoginActivity extends BaseActivity {
 				launchSignUpActivity();
 			}
 		});
-		TextView forgotPassword = Ui.setTextFromHtml(this, R.id.forgot_password,
-				R.string.action_forgot_password);
+
+		TextView forgotPassword = Ui.setTextFromHtml(this,
+				R.id.forgot_password, R.string.action_forgot_password);
 		forgotPassword.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -118,6 +130,18 @@ public class LoginActivity extends BaseActivity {
 				openUri(R.string.uri_forgot_password);
 			}
 		});
+
+		TextView alterHost = Ui.setTextFromHtml(this, R.id.alter_host,
+				R.string.alter_host_link);
+		alterHost.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				int dmy = 0;
+				startActivityForResult(new Intent(LoginActivity.this, AlterHostActivity.class), dmy);
+			}
+		});
+
 	}
 
 	@Override
@@ -140,7 +164,8 @@ public class LoginActivity extends BaseActivity {
 
 			@Override
 			public void run() {
-				ScrollView scrollArea = Ui.findView(LoginActivity.this, R.id.scroll_area);
+				ScrollView scrollArea = Ui.findView(LoginActivity.this,
+						R.id.scroll_area);
 				// using fullScroll() or pageScroll() impacts which child widget
 				// gets focus, so that doesn't work here, instead just scroll by
 				// an absurdly large number.
@@ -204,7 +229,6 @@ public class LoginActivity extends BaseActivity {
 		}
 	}
 
-
 	private void showProgress(boolean show) {
 		super.showProgress(R.id.progress_indicator, show);
 		accountAction.setEnabled(!show);
@@ -212,9 +236,11 @@ public class LoginActivity extends BaseActivity {
 
 	private void onLogInComplete(boolean success, int statusCode, String error) {
 		if (success) {
-			broadcastMgr.registerReceiver(devicesLoadedReceiver, devicesLoadedReceiver.getFilter());
+			broadcastMgr.registerReceiver(devicesLoadedReceiver,
+					devicesLoadedReceiver.getFilter());
 			api.requestAllDevices();
-			Toast toast = Toast.makeText(this, "Loading your Cores...", Toast.LENGTH_LONG);
+			Toast toast = Toast.makeText(this, "Loading your Cores...",
+					Toast.LENGTH_LONG);
 			toast.setGravity(Gravity.CENTER, 0, 0);
 			toast.show();
 
@@ -224,7 +250,8 @@ public class LoginActivity extends BaseActivity {
 				getErrorsDelegate().showCloudUnreachableDialog();
 
 			} else if (statusCode == 400) {
-				mPasswordView.setError(getString(R.string.error_incorrect_password));
+				mPasswordView
+						.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();
 
 			} else {
@@ -236,20 +263,18 @@ public class LoginActivity extends BaseActivity {
 	private void onDevicesUpdated(boolean success, String error) {
 		showProgress(false);
 		if (!isFinishing()) {
-			startActivity(new Intent(this, CoreListActivity.class)
-					.putExtra(CoreListActivity.ARG_ENTERING_FROM_LAUNCH, true));
+			startActivity(new Intent(this, CoreListActivity.class).putExtra(
+					CoreListActivity.ARG_ENTERING_FROM_LAUNCH, true));
 		}
 		finish();
 	}
 
-
 	void launchSignUpActivity() {
 		// the value here doesn't really matter, it's just a flag.
-		startActivity(new Intent(this, SignUpActivity.class)
-				.putExtra(SignUpActivity.EXTRA_FROM_LOGIN, ""));
+		startActivity(new Intent(this, SignUpActivity.class).putExtra(
+				SignUpActivity.EXTRA_FROM_LOGIN, ""));
 		finish();
 	}
-
 
 	class DevicesLoadedReceiver extends BroadcastReceiver {
 
@@ -259,11 +284,11 @@ public class LoginActivity extends BaseActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			onDevicesUpdated((ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
+			onDevicesUpdated(
+					(ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
 					intent.getStringExtra(SimpleSparkApiService.EXTRA_ERROR_MSG));
 		}
 	}
-
 
 	class LoggedInReceiver extends BroadcastReceiver {
 
@@ -273,12 +298,12 @@ public class LoginActivity extends BaseActivity {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			onLogInComplete((ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
+			onLogInComplete(
+					(ApiFacade.getResultCode(intent) == HttpStatus.SC_OK),
 					ApiFacade.getResultCode(intent),
 					intent.getStringExtra(SimpleSparkApiService.EXTRA_ERROR_MSG));
 		}
 	}
-
 
 	static final TLog log = new TLog(LoginActivity.class);
 

@@ -7,7 +7,9 @@ import io.spark.core.android.cloud.ApiFacade;
 import io.spark.core.android.cloud.requestservice.SimpleSparkApiService;
 import io.spark.core.android.storage.Prefs;
 import io.spark.core.android.ui.assets.Typefaces;
-import io.spark.core.android.ui.assets.Typefaces.Style;
+//obsolete 
+//import io.spark.core.android.ui.assets.Typefaces.Style;
+//
 import io.spark.core.android.ui.corelist.CoreListActivity;
 import io.spark.core.android.ui.util.Ui;
 
@@ -93,7 +95,15 @@ public abstract class BaseActivity extends Activity {
 					"android");
 			TextView titleView = (TextView) getWindow().findViewById(actionBarTitle);
 			if (titleView != null) {
-				titleView.setTypeface(Typefaces.getTypeface(this, Style.LIGHT));
+				// **** to avoid having to alter font file names in font_names.xml AND Typefaces.java ****
+				//  
+			    // titleView.setTypeface(Typefaces.getTypeface(this, Style.LIGHT));
+                // 			
+                // do this instead
+				
+				titleView.setTypeface(Typefaces.getTypeface(this, R.string.font_thin));
+				
+				// ***************************************************************************************
 				titleView.setTextSize(21);
 				titleView.setSingleLine(true);
 			}

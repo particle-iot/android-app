@@ -7,15 +7,53 @@
     android:background="@color/tinker_selection_overlay_bg"
     android:orientation="vertical" >
 
-    <com.danh32.fontify.TextView
-        android:id="@+id/tinker_select_pin"
-        android:layout_width="200dp"
+    <LinearLayout
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:text="D0"
-        android:textSize="30sp"
-        fontify:font="@string/gotham_light" />
+        android:layout_marginBottom="1dp"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/tinker_button_hide"
+            style="@style/TinkerSelectButtonBg"
+            android:layout_marginRight="1dp" >
+
+            <View
+                android:id="@id/tinker_button_color"
+                style="@style/TinkerSelectColorBox"
+                android:background="#3fffffff" />
+
+            <com.danh32.fontify.TextView
+                style="@style/TinkerSelectButton"
+                android:layout_gravity="left"
+                android:text="hide" />
+        </LinearLayout>
+
+        <com.danh32.fontify.TextView
+            android:id="@+id/tinker_select_pin"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="D0"
+            android:textSize="24sp"
+            fontify:font="@string/font_thin" />
+
+        <LinearLayout
+            android:id="@+id/tinker_button_reset"
+            style="@style/TinkerSelectButtonBg" >
+
+            <com.danh32.fontify.TextView
+                style="@style/TinkerSelectButton"
+                android:layout_gravity="right"
+                android:text="reset" />
+
+            <View
+                android:id="@id/tinker_button_color"
+                style="@style/TinkerSelectColorBox"
+                android:background="#ff000000" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,7 +87,7 @@
             <View
                 android:id="@id/tinker_button_color"
                 style="@style/TinkerSelectColorBox"
-                android:background="@color/cyan" />
+                android:background="@color/alizarin" />
         </LinearLayout>
     </LinearLayout>
 
@@ -84,7 +122,7 @@
             <View
                 android:id="@id/tinker_button_color"
                 style="@style/TinkerSelectColorBox"
-                android:background="@color/alizarin" />
+                android:background="@color/cyan" />
         </LinearLayout>
     </LinearLayout>
 

@@ -18,7 +18,7 @@
         android:textAllCaps="true"
         android:textColor="@color/cores_list_text"
         android:textSize="15sp"
-        fontify:font="@string/gotham_bold" />
+        fontify:font="@string/font_bold" />
 
     <LinearLayout
         android:id="@+id/progressContainer"

@@ -62,5 +62,6 @@
     <string name="_unnamed_core_">(Unnamed Core)</string>
     <string name="logged_out">Logged out.</string>
     <string name="error_communicating_with_server">Error communicating with server</string>
-
+    <string name="enable_extensions">Extended Features\n(requires ExtTinker Firmware)</string>
+    <string name="alter_host_hint">To make setup easy try local cloud with\nhttp://your.local.host.ip\non port 8080</string>
 </resources>
