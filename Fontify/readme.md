@@ -21,11 +21,32 @@ Fontify is an Android library project providing drop-in replacements for all And
     <style name="CustomTextViewStyle">
         <item name="font">@string/FONT_HELVETICA</item>
     </style>
-2) Use the Fontify subclass of your TextView:  
+2) Use the Fontify subclass of your TextView:
+
 	<com.danh32.fontify.TextView 
 	    android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		style="@style/CustomTextViewStyle" />
+
+3) You can also declare a default Fontify font as part of your Application theme so that every Fontified element will use the same font:
+
+a. Declare the style as in (1) above
+
+b. While still in res/values/styles.xml, add the following attribute to your Application theme:
+
+    <!-- Application theme. Android Studio default example - your theme names may differ -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <item name="fontifyStyle">@style/CustomTextViewStyle</item>
+    </style>
+
+c. In your layouts, use the Fontify subclass of your element as in (2) above, but omit the style attribute if you want the default font from the theme to apply
+
+	  <!-- This element will use the default CustomTextViewStyle from AppTheme
+	       since no specific style with the font attribute is specified -->
+ 	  <com.danh32.fontify.TextView
+	      android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+	  />
 
 ####In layouts:  
 1) Add new XML NameSpace to root element of layout:  
