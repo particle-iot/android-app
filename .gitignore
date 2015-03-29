@@ -12,6 +12,16 @@
 */bin/
 */gen/
 
+# gradle
+gradle/*
+gradlew.*
+Fontify/.gradle/*
+SparkCore/.gradle/*
+
+# IntelliJ/AndroidStudio
+*.iml
+
+
 # Local configuration file (sdk path, etc)
 */local.properties
 
@@ -27,3 +37,5 @@ SparkCore/res/values/local_build.xml
 
 */.metadata/
 */.settings/
+gradle/wrapper/gradle-wrapper.jar
+gradle/wrapper/gradle-wrapper.properties
