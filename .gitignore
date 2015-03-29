@@ -12,6 +12,14 @@
 */bin/
 */gen/
 
+# gradle
+Fontify/.gradle/*
+SparkCore/.gradle/*
+
+# IntelliJ/AndroidStudio
+*.iml
+
+
 # Local configuration file (sdk path, etc)
 */local.properties
 
