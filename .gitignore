@@ -13,8 +13,6 @@
 */gen/
 
 # gradle
-gradle/*
-gradlew.*
 Fontify/.gradle/*
 SparkCore/.gradle/*
 
@@ -37,5 +35,3 @@ SparkCore/res/values/local_build.xml
 
 */.metadata/
 */.settings/
-gradle/wrapper/gradle-wrapper.jar
-gradle/wrapper/gradle-wrapper.properties
