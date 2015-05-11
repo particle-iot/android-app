@@ -12,6 +12,15 @@
 */bin/
 */gen/
 
+# gradle
+Fontify/.gradle/*
+SparkCore/.gradle/*
+
+# IntelliJ/AndroidStudio
+*.iml
+.idea/*
+
+
 # Local configuration file (sdk path, etc)
 */local.properties
 
@@ -24,6 +33,9 @@ SparkCore/res/values/local_build.xml
 # COMMENTED OUT: we want these.
 #.classpath
 #.project
-
 */.metadata/
 */.settings/
+
+# Resources
+SparkCore/assets/*
+SparkCore/libs/smartconfiglib.jar
