@@ -6,7 +6,7 @@
     <string name="uri_build_your_own_app">https://www.spark.io/build</string>
     <string name="uri_docs">http://docs.spark.io</string>
     <string name="uri_contribute">http://spark.github.io</string>
-    <string name="uri_report_a_bug">http://www.github.com/spark/android-app/issues</string>
+    <string name="uri_report_a_bug">http://www.github.com/particle-iot/android-app/issues</string>
     <string name="uri_forgot_password">https://www.spark.io/forgot-password</string>
 
 </resources>
